@@ -27,7 +27,7 @@ public class Fact{
 	
 	Fact(String input, AbstractSequenceClassifier<CoreLabel> classifier){
 		this.s = input;
-		result = classifier.classifyWithInlineXML(input);
+		result = classifier.classifyWithInlineXML(this.s);
 		init(result);
 	}
 	
