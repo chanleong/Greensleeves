@@ -16,8 +16,4 @@ public abstract class Question {
 		this.question = question;
 	}
 	
-	public String askQuesiton(String str){
-		return "";		
-	}
-	
 }
