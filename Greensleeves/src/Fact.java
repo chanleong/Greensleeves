@@ -25,13 +25,23 @@ public class Fact{
 	//Library location for classifier
 	String serializedClassifier = "lib/classifiers/english.muc.7class.distsim.crf.ser.gz";
 	
+	Fact(String input, AbstractSequenceClassifier<CoreLabel> classifier){
+		this.s = input;
+		result = classifier.classifyWithInlineXML(input);
+		init(result);
+	}
+	
 	//Constructor
 	Fact(String input)
 	{
 		this.s = input;
 		AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
 		result = classifier.classifyWithInlineXML(this.s);
-
+		init(result);
+		
+	}
+	
+	private void init(String result){
 		System.out.println(result);
 		//Location
 		Pattern p = Pattern.compile("<LOCATION>\\s*(.+?)\\s*</LOCATION>");
