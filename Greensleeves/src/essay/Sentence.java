@@ -1,4 +1,4 @@
-
+package essay;
 public class Sentence {
 	private String sentence;
 	

@@ -1,13 +1,20 @@
 package questionbank;
 
 public abstract class Question {
-	public enum QuestionType{
+	
+	public Question(){
+		this.question = "";
+		this.questionType = null;
+	}	
+	
+	private enum QuestionType{
 		factual,
 		tfng, //True false not given
 		paragraph,
 		cloze,
 	}
 	private String question;
+	private QuestionType questionType;
 	
 	public String getQuestion() {
 		return question;
@@ -16,8 +23,12 @@ public abstract class Question {
 		this.question = question;
 	}
 	
-	public String askQuesiton(String str){
-		return "";		
+	public QuestionType getQuestionType(){
+		return this.questionType;
+	}
+	
+	public void setQuestionType(QuestionType questionType){
+		this.questionType = questionType;
 	}
 	
 }
