@@ -1,10 +1,16 @@
 package questionbank;
 
-import java.awt.List;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 import rita.wordnet.RiWordnet;
+import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
+import edu.stanford.nlp.trees.GrammaticalStructure;
+import edu.stanford.nlp.trees.GrammaticalStructureFactory;
+import edu.stanford.nlp.trees.PennTreebankLanguagePack;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreebankLanguagePack;
+import edu.stanford.nlp.trees.TypedDependency;
 import essay.Essay;
 import essay.Paragraph;
 import essay.Sentence;
@@ -51,19 +57,51 @@ public class InfoIdentification extends Question{
 	public void questionGen(Essay e) {
 		// TODO Auto-generated method stub
 		int numOfParagraph = e.getNumOfParas();
-		//RiWordnet wordnet = new RiWordnet(null);
+		RiWordnet wordnet = new RiWordnet();
+		LexicalizedParser lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz");
+		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
+		GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
+		Tree parse;
+		
 		String[] c = null;
+		
 		for(int i = 0; i < numOfParagraph; i++){
+			String out = "";	
+			
 			Paragraph p = e.getParagraph(i);
-			c = p.getSentence(0).getTokenizedSent();
+			int numOfSent = p.getNumOfSents();
+			Random r = new Random();
+			int chosen = r.nextInt(numOfSent-1);
+			
+			Sentence s = p.getSentence(chosen);
+			parse = lp.apply(s.getSentence());
+			GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
+			List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
+			gs.getNodes();
 			
 			
+			String tokens[] = s.getTokenizedSent();
+			int size = tokens.length;
+			int word = r.nextInt(size-1);
+			
+			String pos = wordnet.getBestPos(tokens[word]);
+			//System.out.println(pos);
+			//System.out.println(tokens[word]);
+			if(tokens[word] != null && pos != null){
+				String ss = wordnet.getAllSynonyms(tokens[word], pos)[0];
+				tokens[word] = ss;
+				
+				for(int j = 0; j < tokens.length; j++){
+					out += tokens[j] + " ";
+				}
+			}
+			System.out.println(out + "\n");
 			
 		}
 		
-		for(String s: c){
+		/*for(String s: c){
 			System.out.println(s);
-		}
+		}*/
 		
 		
 	}
