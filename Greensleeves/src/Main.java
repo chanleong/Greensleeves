@@ -1,5 +1,8 @@
 import java.util.ArrayList;
-import essay.*;
+
+import questionbank.PMatching;
+import essay.Essay;
+import essay.EssayProcessor;
 
 public class Main {
 
@@ -11,17 +14,20 @@ public class Main {
 		Essay e = new Essay("lib/test.txt");
 		EssayProcessor ep = new EssayProcessor(e);
 		ArrayList<ArrayList<Double>> output;
+		PMatching pm = new PMatching(1, 5);
+		System.out.println(pm.getQuestion());
+		System.out.println(pm.getInstructions()[0]);
 		/*for(int i = 0; i < e.getNumOfParas(); i++){
 			for(int j = 0; j < e.getParagraph(i).getNumOfSents(); j++){
 				System.out.println(e.getParagraph(i).getSentenceStr(j)+"\n" +"\tParagrah " + i);
 			}
 		}*/
-		output = ep.getRating();
+		/*output = ep.getRating();
 		for (int i =0; i < output.size(); i++){
 			System.out.println("Paragraph "+i);
 			for (int j = 0; j < output.get(i).size(); j++)
 				System.out.println(output.get(i).get(j));
 	
-		}
+		}*/
 	}
 }
