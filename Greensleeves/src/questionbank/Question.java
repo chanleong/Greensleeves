@@ -1,13 +1,14 @@
 package questionbank;
 
-public abstract class Question {
+public abstract class Question implements QuestionGenerator{
 	private enum QuestionType{
-		factual,
+		MatchingHeadings,
 		tfng, //True false not given
-		paragraph,
+		InfoIdentification,
 		cloze,
 	}
 	private String question;
+	private String[] quesitonSet;
 	private String[] instructions;
 	private final char[] character =
 									{
@@ -25,6 +26,7 @@ public abstract class Question {
 		this.question = "";
 		this.instructions = null;
 		this.questionType = null;
+		this.quesitonSet = null;
 	}	
 	
 	
@@ -70,6 +72,14 @@ public abstract class Question {
 	
 	public void setStartingQuestion(int startingQ){
 		this.startingQuestion = startingQ;
+	}
+	
+	public String[] getQuestionSet(){
+		return this.quesitonSet;
+	}
+	
+	public void setQuestionSet(String[] questionSet){
+		this.quesitonSet = questionSet;
 	}
 	
 	public int getLastQuestion(){

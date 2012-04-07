@@ -20,7 +20,7 @@ public class Paragraph {
 		sentences = new ArrayList<Sentence>();
 		
 		try {
-			InputStream modelIn = new FileInputStream("lib/en-sent.bin");
+			InputStream modelIn = new FileInputStream("lib/model/en-sent.bin");
 			SentenceModel model = new SentenceModel(modelIn);
 			SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
 			

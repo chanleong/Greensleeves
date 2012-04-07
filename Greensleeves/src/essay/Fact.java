@@ -43,7 +43,7 @@ public class Fact{
 	}
 	
 	private void init(String result){
-		System.out.println(result);
+		//System.out.println(result);
 
 		//Location
 		Pattern p = Pattern.compile("<LOCATION>\\s*(.+?)\\s*</LOCATION>");
