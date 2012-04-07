@@ -77,5 +77,4 @@ public abstract class Question {
 		this.lastQuesiton = lastQ;
 		return this.lastQuesiton;
 	}
-	
 }
