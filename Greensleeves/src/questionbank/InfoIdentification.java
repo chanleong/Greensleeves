@@ -57,8 +57,8 @@ public class InfoIdentification extends Question{
 	public void questionGen(Essay e) {
 		// TODO Auto-generated method stub
 		int numOfParagraph = e.getNumOfParas();
-		RiWordnet wordnet = new RiWordnet();
-		LexicalizedParser lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz");
+		RiWordnet wordnet = LibraryInitializer.WORDNET;
+		LexicalizedParser lp = LibraryInitializer.LP;
 		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
 		GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
 		Tree parse;
@@ -71,14 +71,12 @@ public class InfoIdentification extends Question{
 			Paragraph p = e.getParagraph(i);
 			int numOfSent = p.getNumOfSents();
 			Random r = new Random();
-			int chosen = r.nextInt(numOfSent-1);
-			
+			int chosen = r.nextInt(numOfSent - 1);
 			Sentence s = p.getSentence(chosen);
 			parse = lp.apply(s.getSentence());
 			GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
 			List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
-			gs.getNodes();
-			
+			gs.getNodes();			
 			
 			String tokens[] = s.getTokenizedSent();
 			int size = tokens.length;
@@ -88,9 +86,24 @@ public class InfoIdentification extends Question{
 			//System.out.println(pos);
 			//System.out.println(tokens[word]);
 			if(tokens[word] != null && pos != null){
-				String ss = wordnet.getAllSynonyms(tokens[word], pos)[0];
-				tokens[word] = ss;
-				
+				try{
+					
+					String[] a = wordnet.getAllSynonyms(tokens[word], pos);
+					
+					if(a != null){
+						String ss = wordnet.getAllSynonyms(tokens[word], pos)[0];
+						tokens[word] = ss;
+						System.out.println(tokens[word]);
+					}
+					
+					
+					for(int j = 0; j < tokens.length; j++){
+						out += tokens[j] + " ";
+					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}else{
 				for(int j = 0; j < tokens.length; j++){
 					out += tokens[j] + " ";
 				}

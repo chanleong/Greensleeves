@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import questionbank.LibraryInitializer;
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -14,7 +16,7 @@ public class EssayProcessor{
 	private Essay essay;
 	private ArrayList<ArrayList<Sentence>> sentences;
 	private ArrayList<ArrayList<Double>> Rating;
-	private AbstractSequenceClassifier<CoreLabel> classifier;
+	//private AbstractSequenceClassifier<CoreLabel> classifier;
 	
 	public EssayProcessor(Essay essay){
 		
@@ -22,7 +24,7 @@ public class EssayProcessor{
 		this.sentences = new ArrayList<ArrayList<Sentence>>();
 		this.Rating = new ArrayList<ArrayList<Double>>();
 		
-		this.classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
+		
 		
 		for(int i = 0; i < essay.getNumOfParas(); i++){
 			ArrayList<Sentence> sents = essay.getParagraph(i).getSentences(); 
@@ -35,7 +37,7 @@ public class EssayProcessor{
 	}
 	
 	public void paragOccur(int i){
-		Fact f = new Fact(essay.getParagraphStr(i), this.classifier);
+		Fact f = new Fact(essay.getParagraphStr(i), LibraryInitializer.CLASSIFIER);
 		Time = f.getTime().size();
 		Date = f.getDate().size();
 		Percent = f.getPercent().size();
@@ -60,7 +62,7 @@ public class EssayProcessor{
 		moneyRate = Money/total;// + Math.random() ;
 		for (int j = 0; j < essay.getParagraph(i).getNumOfSents(); j++ ){
 			sum = 0;
-			f = new Fact(essay.getParagraph(i).getSentenceStr(j), this.classifier);
+			f = new Fact(essay.getParagraph(i).getSentenceStr(j), LibraryInitializer.CLASSIFIER);
 			if (f.getTime().size()!=0)
 				sum = sum + timeRate;//*f.getTime().size();
 			if (f.getDate().size()!=0)

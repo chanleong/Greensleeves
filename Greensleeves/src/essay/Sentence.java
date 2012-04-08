@@ -38,6 +38,7 @@ public class Sentence {
 			TokenizerModel model = new TokenizerModel(modelIn);
 			TokenizerME tokenizer = new TokenizerME(model);
 			this.tokenizedSent = tokenizer.tokenize(this.sentence);
+		
 			return this.tokenizedSent;
 		}catch(IOException e){
 			e.printStackTrace();

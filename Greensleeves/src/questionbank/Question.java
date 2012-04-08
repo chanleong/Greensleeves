@@ -1,5 +1,8 @@
 package questionbank;
 
+import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
+import rita.wordnet.RiWordnet;
+
 public abstract class Question implements QuestionGenerator{
 	private enum QuestionType{
 		MatchingHeadings,
@@ -10,7 +13,7 @@ public abstract class Question implements QuestionGenerator{
 	private String question;
 	private String[] quesitonSet;
 	private String[] instructions;
-	private final char[] character =
+	private static final char[] character =
 									{
 										'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 										'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 
@@ -54,8 +57,8 @@ public abstract class Question implements QuestionGenerator{
 		this.questionType = questionType;
 	}
 	
-	public char getQuestionCharacter(int i){
-		return this.character[i];
+	public static char getQuestionCharacter(int i){
+		return character[i];
 	}
 	
 	public int getNumOfQuestions(){
