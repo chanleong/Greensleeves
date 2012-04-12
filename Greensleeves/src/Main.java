@@ -27,6 +27,11 @@ public class Main {
 		System.out.println(ii.getQuestion());
 		System.out.println(ii.getInstructions()[0]);
 		ii.questionGen(e);
+		String[] jj = ii.getQuestionSet();
+		
+		for(int i = 0; i < jj.length; i++){
+			System.out.println(jj[i]);
+		}
 		/*for(int i = 0; i < e.getNumOfParas(); i++){
 			for(int j = 0; j < e.getParagraph(i).getNumOfSents(); j++){
 				System.out.println(e.getParagraph(i).getSentenceStr(j)+"\n" +"\tParagrah " + i);

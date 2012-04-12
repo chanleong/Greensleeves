@@ -1,10 +1,15 @@
 package questionbank;
 
+/**
+ * Contains the relation in the XML
+ * @author Raymond
+ *
+ */
 public class Features {
-	static final String SUBJECT = "subject";
-	static final String ACTION = "action";
-	static final String OBJECT = "object";
+	public static final String SUBJECT = "subject";
+	public static final String ACTION = "action";
+	public static final String OBJECT = "object";
 	
-	static final String TENSE = "tense";
-	static final String NEGATED = "negated";
+	public static final String TENSE = "tense";
+	public static final String NEGATED = "negated";
 }

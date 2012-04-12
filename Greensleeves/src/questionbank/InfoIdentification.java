@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 import rita.wordnet.RiWordnet;
+import simplenlg.features.Feature;
+import simplenlg.framework.NLGFactory;
+import simplenlg.phrasespec.SPhraseSpec;
+import simplenlg.realiser.english.Realiser;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.GrammaticalStructureFactory;
@@ -26,7 +30,7 @@ import essay.Sentence;
 public class InfoIdentification extends Question{
 
 	private final String question = "Which paragraph contains following information?";
-	private String[] questionSet;
+	private String[] _questionSet;
 	private String[] instructions = {"Write the correct letter, "};
 	
 	public Essay testEssay;
@@ -34,6 +38,8 @@ public class InfoIdentification extends Question{
 	
 	public InfoIdentification(int startingQuestion, int numOfQuestion) {
 		// TODO Auto-generated constructor stub
+		
+		super();
 		
 		super.setStartingQuestion(startingQuestion);
 		super.setNumOfQuesitons(numOfQuestion);
@@ -47,7 +53,6 @@ public class InfoIdentification extends Question{
 		super.setInstruction(instructions);
 		
 	}
-
 
 	@Override
 	public void questionGen() {
@@ -66,7 +71,11 @@ public class InfoIdentification extends Question{
 		GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
 		Tree parse;
 		
-		String[] c = null;
+		//SimpleNLG
+		NLGFactory nlgFactory = new NLGFactory(LibraryInitializer.LEXICON);
+		Realiser realiser = new Realiser(LibraryInitializer.LEXICON);
+		SPhraseSpec sent;
+		this._questionSet = new String[numOfParagraph];
 		
 		for(int i = 0; i < numOfParagraph; i++){
 			String out = "";	
@@ -77,7 +86,42 @@ public class InfoIdentification extends Question{
 			Random r = new Random();
 			int chosen = r.nextInt(numOfSent - 1);
 			Sentence s = p.getSentence(chosen);
-			parse = lp.apply(s.getSentence());
+			
+			try {
+				String[] SAO = SentenceProcessor.extractSAO(s.getSentence());
+				String[] component;
+				StringBuffer question = new StringBuffer("");
+				for(int j = 0; j < SAO.length; j++){
+					component = SAO[j].split(",");
+					String subj = component[0];
+					String act = component[1];
+					String obj = component[2];
+					String tense = component[3];
+					String neg = "";
+					if(component.length == 5) neg = component[4];
+					
+					if(!obj.equals("")){
+						sent = nlgFactory.createClause(subj, act, obj);
+						if(!neg.equals("")) sent.setFeature(Feature.NEGATED, true);
+					}else{
+						sent = nlgFactory.createClause(subj, act);
+						if(!neg.equals("")) sent.setFeature(Feature.NEGATED, true);
+					}
+					
+					String output = realiser.realiseSentence(sent);
+					question.append(output);
+					question.append(" ");
+					
+				}
+				this._questionSet[i] = question.toString();
+				//System.out.println(this.questionSet[i]);
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			/*parse = lp.apply(s.getSentence());
 			
 			GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
 			Collection<TypedDependency> tdl = gs.typedDependenciesCCprocessed(true);
@@ -117,9 +161,10 @@ public class InfoIdentification extends Question{
 					out += tokens[j] + " ";
 				}
 			}
-			System.out.println(out + "\n");
+			System.out.println(out + "\n");*/
 			
 		}
+		super.setQuestionSet(_questionSet);
 		
 		/*for(String s: c){
 			System.out.println(s);

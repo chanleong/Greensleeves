@@ -11,7 +11,7 @@ public abstract class Question implements QuestionGenerator{
 		cloze,
 	}
 	private String question;
-	private String[] quesitonSet;
+	private String[] questionSet;
 	private String[] instructions;
 	private static final char[] character =
 									{
@@ -29,7 +29,7 @@ public abstract class Question implements QuestionGenerator{
 		this.question = "";
 		this.instructions = null;
 		this.questionType = null;
-		this.quesitonSet = null;
+		this.questionSet = null;
 	}	
 	
 	
@@ -78,11 +78,11 @@ public abstract class Question implements QuestionGenerator{
 	}
 	
 	public String[] getQuestionSet(){
-		return this.quesitonSet;
+		return this.questionSet;
 	}
 	
 	public void setQuestionSet(String[] questionSet){
-		this.quesitonSet = questionSet;
+		this.questionSet = questionSet;
 	}
 	
 	public int getLastQuestion(){
