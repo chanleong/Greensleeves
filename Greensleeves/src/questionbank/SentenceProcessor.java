@@ -1,23 +1,21 @@
 package questionbank;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.xml.sax.SAXException;
-import org.dom4j.*;
-import org.dom4j.io.*;
-
-import com.alchemyapi.api.AlchemyAPI;
+import org.dom4j.Document;
+import org.dom4j.Element;
 
 import simplenlg.framework.NLGFactory;
 import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.SPhraseSpec;
 import simplenlg.realiser.english.Realiser;
+
+import com.alchemyapi.api.AlchemyAPI;
+
 import edu.stanford.nlp.ling.IndexedWord;
 import edu.stanford.nlp.trees.EnglishGrammaticalRelations;
 import edu.stanford.nlp.trees.GrammaticalRelation;
@@ -113,8 +111,13 @@ public class SentenceProcessor {
 
 	}
 
-	// Extract subject, action and object from sentence
-	public static void extractSAO(String sentence) throws Exception 
+	/**
+	 * 
+	 * @param sentence A string of sentence
+	 * @return An array with Subject Action and Object, Tense and whether is negated. separated by comma
+	 * @throws Exception
+	 */
+	public static String[] extractSAO(String sentence) throws Exception 
 	{
 		AlchemyAPI alchemyObj = AlchemyAPI
 				.GetInstanceFromFile("lib/api_key.txt");
@@ -122,16 +125,33 @@ public class SentenceProcessor {
 		org.w3c.dom.Document w3cdoc = alchemyObj.TextGetRelations(sentence);
 		Document doc = XMLReader.docConverter(w3cdoc);
 		List nodeList = doc.selectNodes("//results/relations/relation");
-				
+		StringBuffer _SAO = new StringBuffer("");
+		ArrayList<String> SAO = new ArrayList<String>();
+		
 		if(nodeList != null){
 			for(Iterator i = nodeList.iterator(); i.hasNext();){
 				Element e = (Element)i.next();
-				XMLReader.getRelation(Features.SUBJECT, e);
-				XMLReader.getRelation(Features.ACTION, e);
-				XMLReader.getRelation(Features.OBJECT, e);
-				System.out.println();
+				_SAO.append(XMLReader.getRelation(Features.SUBJECT, e));
+				_SAO.append(",");
+				_SAO.append(XMLReader.getRelation(Features.ACTION, e));
+				_SAO.append(",");
+				_SAO.append(XMLReader.getRelation(Features.OBJECT, e));
+				_SAO.append(",");
+				_SAO.append(XMLReader.getVerbFeature(Features.TENSE, e));
+				_SAO.append(",");
+				_SAO.append(XMLReader.getVerbFeature(Features.NEGATED, e));
+				SAO.add(_SAO.toString());
+				_SAO = new StringBuffer("");
+				
 			}
 		}
-
+		
+		String[] _SAOArr = new String[SAO.size()];
+		
+		for(int i = 0; i < _SAOArr.length; i++){
+			_SAOArr[i] = SAO.get(i);
+		}
+		
+		return _SAOArr;
 	}
 }
