@@ -1,6 +1,7 @@
 package questionbank;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Random;
 
 import rita.wordnet.RiWordnet;
@@ -9,8 +10,10 @@ import edu.stanford.nlp.trees.GrammaticalStructure;
 import edu.stanford.nlp.trees.GrammaticalStructureFactory;
 import edu.stanford.nlp.trees.PennTreebankLanguagePack;
 import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
+import edu.stanford.nlp.trees.semgraph.SemanticGraph;
 import essay.Essay;
 import essay.Paragraph;
 import essay.Sentence;
@@ -69,14 +72,20 @@ public class InfoIdentification extends Question{
 			String out = "";	
 			
 			Paragraph p = e.getParagraph(i);
+			
 			int numOfSent = p.getNumOfSents();
 			Random r = new Random();
 			int chosen = r.nextInt(numOfSent - 1);
 			Sentence s = p.getSentence(chosen);
 			parse = lp.apply(s.getSentence());
+			
 			GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
-			List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
-			gs.getNodes();			
+			Collection<TypedDependency> tdl = gs.typedDependenciesCCprocessed(true);
+			Collection<TreeGraphNode> tgns = gs.getNodes();
+			Iterator<TypedDependency> it = tdl.iterator();
+			
+			SemanticGraph dependencies = new SemanticGraph(tdl, tgns);
+			SentenceProcessor.traverse(dependencies.getFirstRoot(), dependencies, 0, it);
 			
 			String tokens[] = s.getTokenizedSent();
 			int size = tokens.length;
