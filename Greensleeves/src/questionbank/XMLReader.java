@@ -46,4 +46,28 @@ public class XMLReader {
 			return "";
 		}
 	}
+	
+	/**
+	 * 
+	 * @param node a node
+	 * @return the concept and the relevancy as a pair
+	 */
+	public static Pair<Double,String> getConcept(Node node){
+		String textXpath = "./text";
+		String relevanceXpath = "./relevance";
+		
+		Element text = (Element)node.selectSingleNode(textXpath);
+		Element rel = (Element)node.selectSingleNode(relevanceXpath);
+		
+		if(text != null && rel != null){
+			Double _rel = Double.parseDouble(rel.getText());
+			String _text = text.getText();
+			
+			return new Pair<Double, String>(_rel, _text);
+		}else{
+			return new Pair<Double, String>(0.0, "");
+		}
+		
+		
+	}
 }

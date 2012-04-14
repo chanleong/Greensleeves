@@ -65,11 +65,6 @@ public class InfoIdentification extends Question{
 	public void questionGen(Essay e) {
 		// TODO Auto-generated method stub
 		int numOfParagraph = e.getNumOfParas();
-		RiWordnet wordnet = LibraryInitializer.WORDNET;
-		LexicalizedParser lp = LibraryInitializer.LP;
-		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
-		GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
-		Tree parse;
 		
 		//SimpleNLG
 		NLGFactory nlgFactory = new NLGFactory(LibraryInitializer.LEXICON);
