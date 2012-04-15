@@ -1,10 +1,15 @@
 import java.util.ArrayList;
 
 import questionbank.*;
-import essay.Essay;
-import essay.EssayProcessor;
+import essay.*;
 public class Main {
 
+	public static void display(ArrayList<String> s)
+	{
+		for(int i =0; i < s.size();i++)
+			System.out.println(s.get(i));
+		System.out.println();
+	}
 	/**
 	 * @param args
 	 */
@@ -12,18 +17,38 @@ public class Main {
 		// TODO Auto-generated method stub
 		LibraryInitializer li = new LibraryInitializer();
 		
-		Essay e = new Essay("lib/text4.txt");
-		EssayProcessor ep = new EssayProcessor(e);
+		Essay e = new Essay("lib/test.txt");
 		
-		ArrayList<ArrayList<Double>> output;
+		//FactEvaluator fe = new FactEvaluator();
 		
-		MCQ mcq = new MCQ();
-		mcq.questionGen(e.getParagraph(3));
+		System.out.println("Find specific fact, e.g. LOCATION");
+		ArrayList<String> temp = FactEvaluator.getFact(FactEvaluator.type.LOCATION, e.getEssayStr());
+		display(temp);
 		
-		//System.out.println(mcq.getAnsPair().getLeft());
-		for(int i = 0; i < mcq.getAnsPair().getRight().length; i++){
-			System.out.println(mcq.getAnsPair().getRight()[i]);
+		System.out.println("Find all fact, the 7 types");
+		temp = FactEvaluator.getAllFact(e.getEssayStr());
+		display(temp);
+		
+		System.out.println("Evaluate the key word:");
+		String str = FactEvaluator.getKeyFact(e.getEssayStr());
+		System.out.println(str);
+		System.out.println();
+		
+		System.out.println("Show sentence that consist of a fact in the whole essay");
+		ArrayList<Sentence> temp2 = FactEvaluator.getSentenceAbout("Europe", e);
+		for(int i = 0; i < temp2.size(); i++)
+		{
+			System.out.println(temp2.get(i).getSentence());
 		}
+		
+		
+//		MCQ mcq = new MCQ();
+//		mcq.questionGen(e.getParagraph(3));
+//		
+//		//System.out.println(mcq.getAnsPair().getLeft());
+//		for(int i = 0; i < mcq.getAnsPair().getRight().length; i++){
+//			System.out.println(mcq.getAnsPair().getRight()[i]);
+//		}
 		
 		
 //		ParagraphHeading ph = new ParagraphHeading();		

@@ -10,8 +10,16 @@ import opennlp.tools.tokenize.TokenizerModel;
 
 public class Sentence {
 	private String sentence;
+	private int sentenceNum;
+	private int paragraphNum;
 	private String[] tokenizedSent;
 	
+	
+	public Sentence(String sentence,int paragraphNum,int sentenceNum){
+		this.sentence = sentence;
+		this.sentenceNum = sentenceNum;
+		this.paragraphNum = paragraphNum;
+	}
 	/**
 	 * 
 	 * @param sentence String of sentence
@@ -26,6 +34,11 @@ public class Sentence {
 	
 	public void setSentence(String sentence){
 		this.sentence = sentence;
+	}
+	
+	public int getSentenceNum()
+	{
+		return this.sentenceNum;
 	}
 	
 	/**

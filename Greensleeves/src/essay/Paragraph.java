@@ -10,6 +10,28 @@ import opennlp.tools.sentdetect.SentenceModel;
 public class Paragraph {
 	private ArrayList<Sentence> sentences;
 	private String paragraph;
+	private int paragraphNum;
+	
+	public Paragraph(String paragraph, int paragraphNum){
+		this.paragraph = paragraph;
+		sentences = new ArrayList<Sentence>();
+		
+		try {
+			InputStream modelIn = new FileInputStream("lib/model/en-sent.bin");
+			SentenceModel model = new SentenceModel(modelIn);
+			SentenceDetectorME sentenceDetector = new SentenceDetectorME(model);
+			
+			String _sentences[] = sentenceDetector.sentDetect(this.paragraph);
+			
+			for(int i = 0; i < _sentences.length; i++){
+				sentences.add(new Sentence(_sentences[i], this.paragraphNum, i));
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 
@@ -26,8 +48,8 @@ public class Paragraph {
 			
 			String _sentences[] = sentenceDetector.sentDetect(this.paragraph);
 			
-			for(String _sent: _sentences){
-				sentences.add(new Sentence(_sent));
+			for(int i = 0; i < _sentences.length; i++){
+				sentences.add(new Sentence(_sentences[i], this.paragraphNum, i));
 			}
 			
 		} catch (Exception e) {

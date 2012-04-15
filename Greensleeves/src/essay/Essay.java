@@ -9,6 +9,7 @@ public class Essay {
 	
 	private ArrayList<Paragraph> paragraphs;
 	private String header;
+	private String content;
 	
 	/**
 	 * 
@@ -23,14 +24,18 @@ public class Essay {
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
 			String para;
+			content = "";
 			boolean isHeader = true; //The first line is a header
 			
+			int i = 0;
 			while((para = br.readLine())!=null){
+				content = content + para;
 				if(isHeader){
 					this.header = para;
 					isHeader = false;
 				}else{
-					paragraphs.add(new Paragraph(para));
+					paragraphs.add(new Paragraph(para, i));
+					i++;
 				}
 			}
 			
@@ -79,5 +84,9 @@ public class Essay {
 	 */
 	public int getNumOfParas(){
 		return this.paragraphs.size();
+	}
+	
+	public String getEssayStr(){
+		return this.content;
 	}
 }
