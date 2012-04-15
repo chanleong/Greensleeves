@@ -1,0 +1,82 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+
+import edu.stanford.nlp.objectbank.TokenizerFactory;
+import edu.stanford.nlp.process.CoreLabelTokenFactory;
+import edu.stanford.nlp.process.DocumentPreprocessor;
+import edu.stanford.nlp.process.PTBTokenizer;
+import edu.stanford.nlp.ling.CoreLabel;  
+import edu.stanford.nlp.ling.HasWord;  
+import edu.stanford.nlp.trees.*;
+import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
+
+
+public class tagparsing {
+	
+	String workingSent; 
+	String parsed;
+	
+	public tagparsing(String sent){
+		this.workingSent = sent;
+		this.parsed = parse();
+	}
+	
+	private String parse(){
+		LexicalizedParser lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz");
+		
+	    TokenizerFactory<CoreLabel> tokenizerFactory = 
+	      PTBTokenizer.factory(new CoreLabelTokenFactory(), "");
+	    List<CoreLabel> rawWords2 = 
+	      tokenizerFactory.getTokenizer(new StringReader(workingSent)).tokenize();
+	    Tree parse = lp.apply(rawWords2);
+	
+	    TreebankLanguagePack tlp = new PennTreebankLanguagePack();
+	    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
+	    //GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
+	    //List<TypedDependency> tdl = gs.typedDependenciesCCprocessed();
+	    
+	    TreePrint tp = new TreePrint("wordsAndTags");
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    PrintWriter pw = new PrintWriter(baos);
+	    tp.printTree(parse, pw);
+	    String result = baos.toString();
+
+	    return result;
+	}
+	
+	public String getParsedString(){
+		return parsed;
+	}
+	
+	public String getTypeOfWord(String word){
+		String splitted[] = this.parsed.split(" ");
+		String type = "XX";
+		for (String i : splitted){
+			if (i.split("/")[0].equals(word)){
+				type = i.split("/")[1];
+				break;
+			}	
+		}
+		return type;
+	}
+	
+	public Integer[] getNouns(){
+		ArrayList<Integer> ar = new ArrayList<Integer>(); 
+		//int rcount = 0;
+		String splitted[] = this.parsed.split(" ");
+		int i = 0;
+		for (i = 0; i < splitted.length; i++ ){
+			if (splitted[i].split("/")[1].startsWith("NN")){
+				ar.add(i);
+				//rcount++;
+			}
+		}
+		//Integer result[] = null;
+		return (Integer[])ar.toArray(new Integer[ar.size()]);
+	}
+	
+}
