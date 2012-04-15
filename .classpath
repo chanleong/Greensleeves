@@ -2,8 +2,15 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/rita.wn"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/stanfordParser"/>
-	<classpathentry kind="lib" path="C:/Users/Lawrence/Documents/Dropbox/0088project/disco-1.3.jar"/>
+	<classpathentry kind="lib" path="import/ritaWN/library/ritaWN.jar"/>
+	<classpathentry kind="lib" path="import/ritaWN/library/supportWN.jar"/>
+	<classpathentry kind="lib" path="import/ritaWN/rwn000-src.jar"/>
+	<classpathentry kind="lib" path="import/ritaWN/rwn29-src.jar"/>
+	<classpathentry kind="lib" path="import/ritaWN/rwn31-src.jar"/>
+	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser-2012-03-09-javadoc.jar"/>
+	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser-2012-03-09-models.jar"/>
+	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser-2012-03-09-sources.jar"/>
+	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser.jar"/>
+	<classpathentry kind="lib" path="import/disco-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
