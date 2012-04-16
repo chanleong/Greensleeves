@@ -16,8 +16,8 @@ public class mainclass {
 			
 		*/
 		try{
-			paraphraser p = new paraphraser("The quick brown fox jumps over the lazy dog.");
-			p.setChanges(true, false, false, false);
+			paraphraser p = new paraphraser("While emissions from new cars are far less harmful than they used to be, city streets and motorways are becoming more crowded than ever, often with older trucks, buses and taxis which emit excessive levels of smoke and fumes.");
+			p.setChanges(true, true, true, false, 0.7);
 			System.err.println("paraphrase");
 			System.out.println(p.paraphrase());
 		
