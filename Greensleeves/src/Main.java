@@ -1,4 +1,7 @@
+import java.io.IOException;
 import java.util.ArrayList;
+
+import de.linguatools.disco.DISCO;
 
 import questionbank.*;
 import essay.*;
@@ -12,34 +15,46 @@ public class Main {
 	}
 	/**
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		LibraryInitializer li = new LibraryInitializer();
 		
-		Essay e = new Essay("lib/test.txt");
+		Essay e = new Essay("lib/text4.txt");
+		String discoDir = "C:\\Documents and Settings\\Raymond\\git\\Greensleeves\\Greensleeves\\lib\\wordbase";
+		DISCO disco = new DISCO(discoDir, false);
 		
-		//FactEvaluator fe = new FactEvaluator();
+		Ranker r = new Ranker();
 		
-		System.out.println("Find specific fact, e.g. LOCATION");
-		ArrayList<String> temp = FactEvaluator.getFact(FactEvaluator.type.LOCATION, e.getEssayStr());
-		display(temp);
-		
-		System.out.println("Find all fact, the 7 types");
-		temp = FactEvaluator.getAllFact(e.getEssayStr());
-		display(temp);
-		
-		System.out.println("Evaluate the key word:");
-		String str = FactEvaluator.getKeyFact(e.getEssayStr());
-		System.out.println(str);
-		System.out.println();
-		
-		System.out.println("Show sentence that consist of a fact in the whole essay");
-		ArrayList<Sentence> temp2 = FactEvaluator.getSentenceAbout("Europe", e);
-		for(int i = 0; i < temp2.size(); i++)
-		{
-			System.out.println(temp2.get(i).getSentence());
+		for(int i = 0; i < e.getNumOfParas(); i++){
+			ArrayList<Sentence> ss = r.getRankedSentences(e.getParagraph(i));
+			System.out.println(ss);
+			/*for(int j = 0; i < ss.size(); j++){
+				//System.out.println(ss.get(j).getSentence());
+			}*/
+			//r.getRankedSentences(e.getParagraph(i));
 		}
+		
+//		System.out.println("Find specific fact, e.g. LOCATION");
+//		ArrayList<String> temp = FactEvaluator.getFact(FactEvaluator.type.LOCATION, e.getEssayStr());
+//		display(temp);
+//		
+//		System.out.println("Find all fact, the 7 types");
+//		temp = FactEvaluator.getAllFact(e.getEssayStr());
+//		display(temp);
+//		
+//		System.out.println("Evaluate the key word:");
+//		String str = FactEvaluator.getKeyFact(e.getEssayStr());
+//		System.out.println(str);
+//		System.out.println();
+//		
+//		System.out.println("Show sentence that consist of a fact in the whole essay");
+//		ArrayList<Sentence> temp2 = FactEvaluator.getSentenceAbout("Europe", e);
+//		for(int i = 0; i < temp2.size(); i++)
+//		{
+//			System.out.println(temp2.get(i).getSentence());
+//		}
 		
 		
 //		MCQ mcq = new MCQ();

@@ -28,7 +28,13 @@ public class Sentence {
 		this.sentence = sentence;
 	}
 	
+	@Deprecated
 	public String getSentence(){
+		return this.sentence;
+	}
+	
+	@Override
+	public String toString(){
 		return this.sentence;
 	}
 	

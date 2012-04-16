@@ -6,13 +6,12 @@ public class Ranker {
 	
 	//Variable for the % of the WHOLE paragraph (i.e. What is the whole paragraph about)
 	private Paragraph target;
-	private FactEvaluator fe;
-	private ArrayList<Integer> fitness;
+	private ArrayList<Double> fitness;
 	private String key;
 	
-	private int fitnessCal(Sentence s)
+	private double fitnessCal(Sentence s)
 	{
-		int fitness = 0;
+		double fitness = 0;
 		String sentence = s.getSentence();
 		int sentenceNum = s.getSentenceNum();
 		//add fitness 1 if it is the first sentence
@@ -22,16 +21,16 @@ public class Ranker {
 		if(sentenceNum == this.target.getNumOfSents()-1)
 			fitness ++;
 		//Add 1 if the sentence contain the keyword of the paragraph
-		if(this.fe.exist(this.key, s.getSentence()))
+		if(FactEvaluator.exist(this.key, s.getSentence()))
 			fitness ++;
-		fitness = fitness + this.fe.getNumOfAllFact(s.getSentence());
+		fitness = fitness + FactEvaluator.getNumOfAllFact(s.getSentence());
 		fitness = fitness + sentence.length()/100;
 		return fitness;
 	}
 	
-	private ArrayList<Integer> getFitness()
+	private ArrayList<Double> getFitness()
 	{
-		ArrayList<Integer> result = new ArrayList<Integer>();
+		ArrayList<Double> result = new ArrayList<Double>();
 		for(int i = 0; i < target.getNumOfSents(); i++)
 		{
 			result.add(fitnessCal(target.getSentence(i)));
@@ -39,12 +38,11 @@ public class Ranker {
 		return result;
 	}
 	
-	public ArrayList<Sentence> getRankedSentences(Paragraph p, FactEvaluator fe)
+	public ArrayList<Sentence> getRankedSentences(Paragraph p)
 	{
-		this.fe = fe;
 		this.target = p;
 		ArrayList<Sentence> result = new ArrayList<Sentence>();
-		this.key = this.fe.getKeyFact(target.getParagraph());
+		this.key = FactEvaluator.getKeyFact(target.getParagraph());
 		ArrayList<Sentence> workingSet = new ArrayList<Sentence>();
 		workingSet.addAll(target.getSentences());
 		
@@ -60,7 +58,7 @@ public class Ranker {
 
 		for(int i = 0;i < target.getNumOfSents();i++)
 		{
-			int maxFitness = 0;
+			double maxFitness = 0;
 			int maxIndex = 0;
 			for(int j = 0; j < fitness.size(); j++)
 			{

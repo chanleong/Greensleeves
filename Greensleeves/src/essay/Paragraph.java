@@ -62,7 +62,13 @@ public class Paragraph {
 	 * 
 	 * @return String of the paragraph
 	 */
+	@Deprecated
 	public String getParagraph(){
+		return this.paragraph;
+	}
+	
+	@Override
+	public String toString(){
 		return this.paragraph;
 	}
 	
