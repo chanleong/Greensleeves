@@ -64,19 +64,31 @@ public class tagparsing {
 		return type;
 	}
 	
-	public Integer[] getNouns(){
+	public Integer[] getPartsOfSpeech(String tag){
 		ArrayList<Integer> ar = new ArrayList<Integer>(); 
 		//int rcount = 0;
 		String splitted[] = this.parsed.split(" ");
 		int i = 0;
 		for (i = 0; i < splitted.length; i++ ){
-			if (splitted[i].split("/")[1].startsWith("NN")){
+			if (splitted[i].split("/")[1].startsWith(tag)){
 				ar.add(i);
 				//rcount++;
 			}
 		}
 		//Integer result[] = null;
 		return (Integer[])ar.toArray(new Integer[ar.size()]);
+	}
+	
+	public Integer[] getNouns(){
+		return this.getPartsOfSpeech("NN");
+	}
+	
+	public Integer[] getVerbs(){
+		return this.getPartsOfSpeech("VB");
+	}
+	
+	public Integer[] getAdj(){
+		return this.getPartsOfSpeech("JJ");
 	}
 	
 }
