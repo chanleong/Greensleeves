@@ -32,7 +32,7 @@ public class MCQ extends Question{
 	public void questionGen(Paragraph p) {
 		// TODO Auto-generated method stub
 		try {
-			String[] relns = SentenceProcessor.extractSAO(p.getParagraph());
+			String[] relns = SentenceProcessor.extractSAO(p.toString());
 			String[] component = null;
 			String[] choices = new String[4];
 			
@@ -96,10 +96,13 @@ public class MCQ extends Question{
 				Collections.shuffle(objs); //Make the remaining choice random
 				choices[0] = pickedObj;
 				
+				
 				//Randomly choose other 3 choices that is different from the picked one
 				for(int i = 1; i <= 3; i++){
 					choices[i] = objs.get(i-1);
 				}
+				//Shuffle the choices
+				shuffle(choices);
 				
 				this.ansPair = new Pair<String, String[]>(pickedSent, choices);
 				
@@ -108,25 +111,54 @@ public class MCQ extends Question{
 			}else{
 
 				ArrayList<Pair<Double, String>> conceptPair = SentenceProcessor.extractConcept(p.getParagraph());
-				System.out.println("Which of the following correctly describe the paragraph " + "" + " ? (Choose the best one)");
+				//System.out.println("Which of the following correctly describe the paragraph " + "" + " ? (Choose the best one)");
+				
+				String instruction = "Which of the following correctly describe the paragraph " + "" + " ? (Choose the best one)";
 				
 				//The first one is of the highest relevancy, mark it as answer
 				choices[0] = conceptPair.get(0).getRight();
 				conceptPair.remove(0);
+				this.ans = 0; //Choice 0 is answer
 				
-				Collections.shuffle(conceptPair);
+				Collections.shuffle(conceptPair); //Randomly pick some concepts
 				
-				for(int i = 1; i <= 3; i++){
-					choices[i] = conceptPair.get(i).getRight();
+				if(conceptPair.size() > 4){
+					for(int i = 1; i <= 3; i++){
+						choices[i] = conceptPair.get(i).getRight();
+					}
 				}
 				
-				this.ansPair = new Pair<String, String[]>(choices[0], choices);
+				//Shuffle the answer
+				shuffle(choices);
+				
+				this.ansPair = new Pair<String, String[]>(instruction, choices);
 			}
 			//SentenceProcessor.extractConcept(p.getParagraph());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void shuffle(String[] choices){
+		Random r = new Random();
+		String tmp = "";
+		int tmpAns = this.ans;
+		
+		for(int i = 0; i < choices.length; i++){
+			int rand1 = r.nextInt(choices.length);
+			tmp = choices[i];
+			choices[i] = choices[rand1];
+			choices[rand1] = tmp;
+			
+			if((tmpAns == i)||(tmpAns == rand1)){
+				if(tmpAns == rand1) tmpAns = i;
+				else if(tmpAns == i) tmpAns = rand1;
+			}
+		}
+		
+		this.ans = tmpAns;
+		super.setAns(this.ans);
 	}
 	
 	public Pair<String, String[]> getAnsPair(){

@@ -13,17 +13,12 @@ public abstract class Question implements QuestionGenerator{
 	private String question;
 	private String[] questionSet;
 	private String[] instructions;
-	private static final char[] character =
-									{
-										'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-										'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 
-										'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-									}; 
 	public QuestionType questionType;
 	
 	private int startingQuestion;
 	private int lastQuesiton;
 	private int numOfQuestions;
+	private int ans = -1;
 	
 	public Question(){
 		this.question = "";
@@ -58,7 +53,7 @@ public abstract class Question implements QuestionGenerator{
 	}
 	
 	public static char getQuestionCharacter(int i){
-		return character[i];
+		return (char)(i + 65);
 	}
 	
 	public int getNumOfQuestions(){
@@ -90,4 +85,24 @@ public abstract class Question implements QuestionGenerator{
 		this.lastQuesiton = lastQ;
 		return this.lastQuesiton;
 	}
+	
+	/**
+	 * 
+	 * @return The array index of the answer
+	 */
+	public int getAns(){
+		return this.ans;
+	}
+	
+	/**
+	 * 
+	 * @param ans Array index of answer
+	 */
+	public void setAns(int ans){
+		this.ans = ans;
+	}
+	
+	/*public static void shuffle(String[] s){
+		
+	}*/
 }

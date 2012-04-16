@@ -2,6 +2,7 @@ package essay;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +52,18 @@ public class FactEvaluator{
 		for(FactEvaluator.type t: FactEvaluator.type.values())
 			result.addAll(getFact(t, input));
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param input
+	 * @return A unique set of facts will be returned
+	 */
+	public static ArrayList<String> getAllUniqueFacts(String input){
+		ArrayList<String> result = new ArrayList<String>();
+		for(FactEvaluator.type t: FactEvaluator.type.values())
+			result.addAll(getFact(t, input));
+		return new ArrayList<String>(new HashSet<String>(result));
 	}
 	
 	//Return number of fact for a specific type

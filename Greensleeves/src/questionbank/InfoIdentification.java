@@ -1,5 +1,6 @@
 package questionbank;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
@@ -31,9 +32,8 @@ public class InfoIdentification extends Question{
 
 	private final String question = "Which paragraph contains following information?";
 	private String[] _questionSet;
+	private ArrayList<Pair<Integer, String>> questionAnsSet;
 	private String[] instructions = {"Write the correct letter, "};
-	
-	public Essay testEssay;
 	
 	
 	public InfoIdentification(int startingQuestion, int numOfQuestion) {
@@ -49,6 +49,8 @@ public class InfoIdentification extends Question{
 		char end = super.getQuestionCharacter(super.getLastQuestion() -1);
 		
 		instructions[0] += start + "-" + end + " in boxes " + startingQuestion + "-" + super.getLastQuestion() + ".";
+		
+		questionAnsSet = new ArrayList<Pair<Integer, String>>();
 		
 		super.setInstruction(instructions);
 		
@@ -83,7 +85,7 @@ public class InfoIdentification extends Question{
 			Sentence s = p.getSentence(chosen);
 			
 			try {
-				String[] SAO = SentenceProcessor.extractSAO(s.getSentence());
+				String[] SAO = SentenceProcessor.extractSAO(s.toString());
 				String[] component;
 				StringBuffer question = new StringBuffer("");
 				for(int j = 0; j < SAO.length; j++){
@@ -109,6 +111,7 @@ public class InfoIdentification extends Question{
 					
 				}
 				this._questionSet[i] = question.toString();
+				this.questionAnsSet.add(new Pair<Integer, String>(i, this._questionSet[i]));
 				//System.out.println(this.questionSet[i]);
 				
 			} catch (Exception e1) {
@@ -160,6 +163,7 @@ public class InfoIdentification extends Question{
 			
 		}
 		super.setQuestionSet(_questionSet);
+		shuffle(this.questionAnsSet);
 		
 		/*for(String s: c){
 			System.out.println(s);
@@ -167,7 +171,34 @@ public class InfoIdentification extends Question{
 		
 		
 	}
-
+	
+	private void shuffle(ArrayList<Pair<Integer, String>> questionAnsSet){
+		Random r = new Random();
+		String tmpStr = "";
+		String randStr = "";
+		int tmpInt, randInt = 0;
+		
+		int size = questionAnsSet.size();
+		
+		for(int i = 0; i < size; i++){
+			int rand1 = r.nextInt(size);
+			tmpInt = questionAnsSet.get(i).getLeft();
+			tmpStr = questionAnsSet.get(i).getRight();
+			
+			randInt = questionAnsSet.get(rand1).getLeft();
+			randStr = questionAnsSet.get(rand1).getRight();
+			
+			questionAnsSet.get(i).setLeft(randInt);
+			questionAnsSet.get(i).setRight(randStr);
+			questionAnsSet.get(rand1).setLeft(tmpInt);
+			questionAnsSet.get(rand1).setRight(tmpStr);
+			
+		}
+	}
+	
+	public ArrayList<Pair<Integer, String>> getQAset(){
+		return this.questionAnsSet;
+	}
 
 	@Override
 	public void questionGen(Paragraph p) {

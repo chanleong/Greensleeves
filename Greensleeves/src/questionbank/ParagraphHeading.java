@@ -43,7 +43,7 @@ public class ParagraphHeading extends Question{
 				Sentence s = p.getSentence(j);
 				TreebankLanguagePack tlp = new PennTreebankLanguagePack();
 			    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
-			    Tree parse = LibraryInitializer.LP.apply(s.getSentence());				
+			    Tree parse = LibraryInitializer.LP.apply(s.toString());				
 				GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
 			    Collection<TypedDependency> c = gs.typedDependenciesCCprocessed(true);
 			    Collection<TreeGraphNode> tn = gs.getNodes();
