@@ -10,8 +10,6 @@ public class FeaturesMatching extends Question {
 	@Override
 	public void questionGen() {
 		// TODO Auto-generated method stub
-		RiWordnet rw = LibraryInitializer.WORDNET;
-		System.out.println(rw.getBestPos("Happy"));
 	}
 
 	@Override
@@ -28,7 +26,7 @@ public class FeaturesMatching extends Question {
 	@Override
 	public void questionGen(Sentence s) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

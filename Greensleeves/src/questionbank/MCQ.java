@@ -11,6 +11,11 @@ import essay.Essay;
 import essay.Paragraph;
 import essay.Sentence;
 
+/**
+ * Generate a MC question at paragraph level.
+ * @author Raymond
+ *
+ */
 public class MCQ extends Question{
 	
 	private int ans;

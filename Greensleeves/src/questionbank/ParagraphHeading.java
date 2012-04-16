@@ -53,7 +53,7 @@ public class ParagraphHeading extends Question{
 			    SentenceProcessor.traverse(dependency.getFirstRoot(), dependency, 0, it);
 				
 			}
-			int chosenIdx = chooseSent(SentenceProcessor.sents);		
+			int chosenIdx = chooseSent(SentenceProcessor.sents);	
 			
 			System.out.println(SentenceProcessor.sents.get(chosenIdx));
 			SentenceProcessor.sents.clear();

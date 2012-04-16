@@ -20,8 +20,6 @@ public class FactEvaluator{
 
 	private static AbstractSequenceClassifier<CoreLabel> classifier = LibraryInitializer.CLASSIFIER;;
 	
-	//Library location for classifier
-	String serializedClassifier = "lib/classifiers/english.muc.7class.distsim.crf.ser.gz";
 	//classifier = 
 	//Constructor
 	public FactEvaluator()

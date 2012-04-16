@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.linguatools.disco.DISCO;
+import de.linguatools.disco.*;
 
 import questionbank.*;
 import essay.*;
@@ -21,9 +21,20 @@ public class Main {
 		// TODO Auto-generated method stub
 		LibraryInitializer li = new LibraryInitializer();
 		
-		Essay e = new Essay("lib/text4.txt");
+		Essay e = new Essay("lib/test2.txt");
+		TFNG tfng = new TFNG();
+		
+		tfng.questionGen(e);
+		
 //		String discoDir = "C:\\Documents and Settings\\Raymond\\git\\Greensleeves\\Greensleeves\\lib\\wordbase";
 //		DISCO disco = new DISCO(discoDir, false);
+		
+//		ReturnDataCol[] s = disco.collocations("powerful computer");
+//		
+//		for(int i = 0; i < s.length; i++){
+//			System.out.println(s[i].word);
+//		}
+		
 //		
 //		Ranker r = new Ranker();
 //		
@@ -50,7 +61,7 @@ public class Main {
 		System.out.println();
 		
 		System.out.println("Show sentence that consist of a fact in the whole essay");
-		ArrayList<Sentence> temp2 = FactEvaluator.getSentenceAbout("Charles Honorton", e);
+		ArrayList<Sentence> temp2 = FactEvaluator.getSentenceAbout("Sirius", e);
 		for(int i = 0; i < temp2.size(); i++)
 		{
 			System.out.println(temp2.get(i).getSentence());
