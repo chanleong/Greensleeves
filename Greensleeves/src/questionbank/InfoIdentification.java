@@ -112,6 +112,8 @@ public class InfoIdentification extends Question{
 					
 				}
 				String[] questions = question.toString().split("#");
+				
+				//TODO: Choose the sentence with weight
 				chosen = r.nextInt(questions.length);
 				this._questionSet[i] = questions[chosen];
 				this.questionAnsSet.add(new Pair<Integer, String>(i, this._questionSet[i]));
