@@ -15,12 +15,12 @@ import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 
 
-public class tagparsing {
+public class Tagparsing {
 	
 	String workingSent; 
 	String parsed;
 	
-	public tagparsing(String sent){
+	public Tagparsing(String sent){
 		this.workingSent = sent;
 		this.parsed = parse();
 	}

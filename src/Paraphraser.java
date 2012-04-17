@@ -14,13 +14,13 @@ import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.ling.CoreLabel;  
 
 
-public class paraphraser {
+public class Paraphraser {
 	DISCO disco;
 	String workingSent;
 	boolean changes[] = {false, false, false, false};
 	double prob = 1;
 	
-	public paraphraser(String workingSent) throws IOException{
+	public Paraphraser(String workingSent) throws IOException{
 		disco = new DISCO(parameters.disco.discoDir, false);
 		this.workingSent = workingSent;
 		
@@ -47,7 +47,7 @@ public class paraphraser {
 		for (int i = 0; i < inter.length; i++){
 			inter[i] = rawWords2.get(i).originalText();
 		}
-		tagparsing tp = new tagparsing(workingSent);
+		Tagparsing tp = new Tagparsing(workingSent);
 		for (int i = 0; i < 4; i++){
 			if ( (i == 0 || i == 1 || i == 2) && changes[i] ){ // nouns, verbs and adj
 				Integer n[];
