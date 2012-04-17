@@ -12,5 +12,15 @@
 	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser-2012-03-09-sources.jar"/>
 	<classpathentry kind="lib" path="import/stanford-parser-2012-03-09/stanford-parser.jar"/>
 	<classpathentry kind="lib" path="import/disco-1.3.jar"/>
+	<classpathentry kind="lib" path="import/stanford-corenlp-2012-04-03.jar"/>
+	<classpathentry kind="lib" path="import/AlchemyAPI.jar"/>
+	<classpathentry kind="lib" path="import/jwnl-1.3.3.jar"/>
+	<classpathentry kind="lib" path="import/opennlp-maxent-3.0.2-incubating.jar"/>
+	<classpathentry kind="lib" path="import/opennlp-tools-1.5.2-incubating.jar"/>
+	<classpathentry kind="lib" path="import/opennlp-uima-1.5.2-incubating.jar"/>
+	<classpathentry kind="lib" path="import/simplenlgv4.3.jar"/>
+	<classpathentry kind="lib" path="import/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="import/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="import/jaxme-api-0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
