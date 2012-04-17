@@ -22,5 +22,11 @@
 	<classpathentry kind="lib" path="import/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="import/jaxen-1.1-beta-6.jar"/>
 	<classpathentry kind="lib" path="import/jaxme-api-0.3.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itext-xtra-5.2.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itext-xtra-5.2.1-sources.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itext-xtra-5.2.1.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itextpdf-5.2.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itextpdf-5.2.1-sources.jar"/>
+	<classpathentry kind="lib" path="import/itext-5.2.1/itextpdf-5.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

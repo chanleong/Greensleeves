@@ -33,7 +33,7 @@ import essay.Sentence;
 public class TFNG extends Question{
 	
 	//0:fakse, 1:true, 2:Not Given
-	private Pair<String, Integer> questionAnsSet;
+	private Pair<Integer, String> questionAnsPair;
 	
 	private boolean ans;
 	private boolean posRestructure;
@@ -45,41 +45,42 @@ public class TFNG extends Question{
 	
 	public TFNG(Sentence s){
 		this.s = s;
+		this.questionType = QuestionType.TFNG;
 	}
 	
 	@Override
 	public void questionGen() {
 		// TODO Auto-generated method stub
-				String tokens[] = s.getTokenizedSent();
-				Random r = new Random();
-				int pickedSent = -1;
-				
-				StringBuffer sb = new StringBuffer("");
-				
-				substitute(tokens);
-				
-				for(int i = 0; i < tokens.length; i++){
-					sb.append(tokens[i]);
-					sb.append(" ");
-				}
-				ArrayList<Sentence>test = new ArrayList<Sentence>();
-				
-				test.add(new Sentence(sb.toString()));
-				
-				System.out.println(test);
-				
-				genSents(test);
-				
-				pickedSent = r.nextInt(SentenceProcessor.sents.size());
-				String sent = SentenceProcessor.sents.get(pickedSent).toString();
-				
-				this.ans = this.posRestructure && this.posSub;
-				int _ans = (this.ans)? 1 : 0;
-				this.questionAnsSet = new Pair<String, Integer>(sent, _ans);
-				
-				
-				System.out.println(this.questionAnsSet);
-				//System.out.println(sb.toString());
+		String tokens[] = s.getTokenizedSent();
+		Random r = new Random();
+		int pickedSent = -1;
+
+		StringBuffer sb = new StringBuffer("");
+
+		substitute(tokens);
+
+		for(int i = 0; i < tokens.length; i++){
+			sb.append(tokens[i]);
+			sb.append(" ");
+		}
+		ArrayList<Sentence>test = new ArrayList<Sentence>();
+
+		test.add(new Sentence(sb.toString()));
+
+		System.out.println(test);
+
+		genSents(test);
+
+		pickedSent = r.nextInt(SentenceProcessor.sents.size());
+		String sent = SentenceProcessor.sents.get(pickedSent).toString();
+
+		this.ans = this.posRestructure && this.posSub;
+		int _ans = (this.ans)? 1 : 0;
+		this.questionAnsPair = new Pair<Integer, String>(_ans, sent);
+
+
+		System.out.println(this.questionAnsPair);
+		//System.out.println(sb.toString());
 		
 	}
 
@@ -188,8 +189,8 @@ public class TFNG extends Question{
 	 * 
 	 * @return The question and answer pair. Left is question, right is answer
 	 */
-	public Pair<String, Integer> getAnsPair(){
-		return this.questionAnsSet;
+	public Pair<Integer, String> getAnsPair(){
+		return this.questionAnsPair;
 	}
 
 }

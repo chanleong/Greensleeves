@@ -54,35 +54,35 @@ public class ParagraphHeading extends Question{
 	@Override
 	public void questionGen() {
 		// TODO Auto-generated method stub
-				int numOfParas = e.getNumOfParas();
-				int numOfSent;
-				Random r = new Random();
-				
-				for(int i = 0; i < numOfParas; i++){
-					Paragraph p = e.getParagraph(i);
-					numOfSent = p.getNumOfSents();
-					
-					for(int j = 0; j < numOfSent; j++){
-						Sentence s = p.getSentence(j);
-						TreebankLanguagePack tlp = new PennTreebankLanguagePack();
-					    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
-					    Tree parse = LibraryInitializer.LP.apply(s.toString());				
-						GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
-					    Collection<TypedDependency> c = gs.typedDependenciesCCprocessed(true);
-					    Collection<TreeGraphNode> tn = gs.getNodes();
-					    SemanticGraph dependency = new SemanticGraph(c, tn);
-					    Iterator<TypedDependency> it = c.iterator();
-						
-					    SentenceProcessor.traverse(dependency.getFirstRoot(), dependency, 0, it);
-						
-					}
-					int chosenIdx = chooseSent(SentenceProcessor.sents);	
-					
-					this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
-					
-					System.out.println(SentenceProcessor.sents.get(chosenIdx));
-					System.out.println("Paragraph: " + i);
-				}
+		int numOfParas = e.getNumOfParas();
+		int numOfSent;
+		Random r = new Random();
+
+		for(int i = 0; i < numOfParas; i++){
+			Paragraph p = e.getParagraph(i);
+			numOfSent = p.getNumOfSents();
+
+			for(int j = 0; j < numOfSent; j++){
+				Sentence s = p.getSentence(j);
+				TreebankLanguagePack tlp = new PennTreebankLanguagePack();
+				GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
+				Tree parse = LibraryInitializer.LP.apply(s.toString());				
+				GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
+				Collection<TypedDependency> c = gs.typedDependenciesCCprocessed(true);
+				Collection<TreeGraphNode> tn = gs.getNodes();
+				SemanticGraph dependency = new SemanticGraph(c, tn);
+				Iterator<TypedDependency> it = c.iterator();
+
+				SentenceProcessor.traverse(dependency.getFirstRoot(), dependency, 0, it);
+
+			}
+			int chosenIdx = chooseSent(SentenceProcessor.sents);	
+
+			this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
+
+			System.out.println(SentenceProcessor.sents.get(chosenIdx));
+			System.out.println("Paragraph: " + i);
+		}
 		
 	}
 	
