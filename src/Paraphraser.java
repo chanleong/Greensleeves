@@ -12,6 +12,7 @@ import edu.stanford.nlp.process.CoreLabelTokenFactory;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.process.PTBTokenizer;
 import edu.stanford.nlp.ling.CoreLabel;  
+import rita.wordnet.RiWordnet;
 
 
 public class Paraphraser {
@@ -19,10 +20,12 @@ public class Paraphraser {
 	String workingSent;
 	boolean changes[] = {false, false, false, false};
 	double prob = 1;
+	RiWordnet ri;
 	
 	public Paraphraser(String workingSent) throws IOException{
 		disco = new DISCO(parameters.disco.discoDir, false);
 		this.workingSent = workingSent;
+		ri = new RiWordnet();
 		
 	}
 	
