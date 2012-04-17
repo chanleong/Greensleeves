@@ -21,11 +21,11 @@ public class Main {
 		// TODO Auto-generated method stub
 		LibraryInitializer li = new LibraryInitializer();
 		
-		Essay e = new Essay("lib/test2.txt");
-		TFNG tfng = new TFNG();
-		
-		//System.out.println(e.getParagraph(1).getSentenceStr(0));
-		tfng.questionGen(e.getParagraph(0).getSentence(0));
+		Essay e = new Essay("lib/test1.txt");
+//		TFNG tfng = new TFNG();
+//		
+//		//System.out.println(e.getParagraph(1).getSentenceStr(0));
+//		tfng.questionGen(e.getParagraph(0).getSentence(0));
 		
 //		String discoDir = "C:\\Documents and Settings\\Raymond\\git\\Greensleeves\\Greensleeves\\lib\\wordbase";
 //		DISCO disco = new DISCO(discoDir, false);
@@ -69,18 +69,18 @@ public class Main {
 //		}
 		
 		
-		MCQ mcq = new MCQ();
-		mcq.questionGen(e.getParagraph(1));
-		
-		System.out.println(mcq.getAnsPair().getLeft());
-		for(int i = 0; i < mcq.getAnsPair().getRight().length; i++){
-			System.out.println(mcq.getAnsPair().getRight()[i]);
-		}
-		System.out.println(mcq.getAns());
-		
-		
-		ParagraphHeading ph = new ParagraphHeading();		
-		ph.questionGen(e);		
+//		MCQ mcq = new MCQ();
+//		mcq.questionGen(e.getParagraph(1));
+//		
+//		System.out.println(mcq.getAnsPair().getLeft());
+//		for(int i = 0; i < mcq.getAnsPair().getRight().length; i++){
+//			System.out.println(mcq.getAnsPair().getRight()[i]);
+//		}
+//		System.out.println(mcq.getAns());
+//		
+//		
+//		ParagraphHeading ph = new ParagraphHeading();		
+//		ph.questionGen(e);		
 		InfoIdentification ii = new InfoIdentification(1, 8);	
 		//ii.testEssay = e;
 		System.out.println(ii.getQuestion());

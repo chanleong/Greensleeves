@@ -20,7 +20,11 @@ import essay.Sentence;
 
 public class ParagraphHeading extends Question{
 	
+	private ArrayList<Pair<Integer, String>> questionAnsPair;
 	
+	public ParagraphHeading(){
+		this.questionAnsPair = new ArrayList<Pair<Integer, String>>();
+	}
 	
 	@Override
 	public void questionGen() {
@@ -55,8 +59,9 @@ public class ParagraphHeading extends Question{
 			}
 			int chosenIdx = chooseSent(SentenceProcessor.sents);	
 			
+			this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
+			
 			System.out.println(SentenceProcessor.sents.get(chosenIdx));
-			SentenceProcessor.sents.clear();
 			System.out.println("Paragraph: " + i);
 		}
 		

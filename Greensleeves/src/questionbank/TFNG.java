@@ -26,7 +26,7 @@ import essay.Ranker;
 import essay.Sentence;
 
 /**
- * True fals not given
+ * True fals not given, generating in sentence level
  * @author Raymond
  *
  */

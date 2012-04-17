@@ -2,6 +2,7 @@ package questionbank;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -24,7 +25,7 @@ import essay.Paragraph;
 import essay.Sentence;
 
 /**
- * Paragraph matching question
+ * Paragraph matching question, generated at Essay level
  * @author Raymond
  *
  */
@@ -85,7 +86,7 @@ public class InfoIdentification extends Question{
 			Sentence s = p.getSentence(chosen);
 			
 			try {
-				String[] SAO = SentenceProcessor.extractSAO(s.toString());
+				String[] SAO = SentenceProcessor.extractSAO(p.toString());
 				String[] component;
 				StringBuffer question = new StringBuffer("");
 				for(int j = 0; j < SAO.length; j++){
@@ -107,10 +108,12 @@ public class InfoIdentification extends Question{
 					
 					String output = realiser.realiseSentence(sent);
 					question.append(output);
-					question.append(" ");
+					question.append("#");
 					
 				}
-				this._questionSet[i] = question.toString();
+				String[] questions = question.toString().split("#");
+				chosen = r.nextInt(questions.length);
+				this._questionSet[i] = questions[chosen];
 				this.questionAnsSet.add(new Pair<Integer, String>(i, this._questionSet[i]));
 				//System.out.println(this.questionSet[i]);
 				
@@ -163,7 +166,8 @@ public class InfoIdentification extends Question{
 			
 		}
 		super.setQuestionSet(_questionSet);
-		shuffle(this.questionAnsSet);
+		Collections.shuffle(questionAnsSet);
+		//shuffle(this.questionAnsSet);
 		
 		/*for(String s: c){
 			System.out.println(s);
@@ -172,6 +176,7 @@ public class InfoIdentification extends Question{
 		
 	}
 	
+	@Deprecated
 	private void shuffle(ArrayList<Pair<Integer, String>> questionAnsSet){
 		Random r = new Random();
 		String tmpStr = "";

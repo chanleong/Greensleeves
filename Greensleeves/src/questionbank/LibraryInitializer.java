@@ -7,6 +7,11 @@ import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import rita.wordnet.RiWordnet;
 import simplenlg.lexicon.Lexicon;
 
+/**
+ * Initialize the libraries
+ * @author Raymond
+ *
+ */
 public class LibraryInitializer {
 	public static RiWordnet WORDNET;
 	public static LexicalizedParser LP;
