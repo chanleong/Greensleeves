@@ -20,7 +20,32 @@ import essay.Sentence;
 
 public class ParagraphHeading extends Question{
 	
+	private Essay e;
+	
 	private ArrayList<Pair<Integer, String>> questionAnsPair;
+	
+	private String[] _questionSet;
+	private String[] instructions;
+	
+	
+	public ParagraphHeading(Essay e, int essayNum){
+		this.e = e;
+		int numOfQs = e.getNumOfParas();
+		super.setNumOfQuesitons(numOfQs);
+		char start = Question.getQuestionCharacter(0);
+		char end = Question.getQuestionCharacter(numOfQs);
+		
+		this.questionType = QuestionType.ParagraphHeading;
+		this.instructions = new String[3];
+		
+		this.instructions[0] = "Reading Passage " + essayNum + " has " + numOfQs + 
+								"paragraphs, " + start + "-" + end;
+		this.instructions[1] = "Choose the correct heading for paragraphs from the list below.";
+		
+		super.setInstruction(instructions);
+		
+		this.questionAnsPair = new ArrayList<Pair<Integer, String>>();
+	}
 	
 	public ParagraphHeading(){
 		this.questionAnsPair = new ArrayList<Pair<Integer, String>>();
@@ -29,42 +54,35 @@ public class ParagraphHeading extends Question{
 	@Override
 	public void questionGen() {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void questionGen(Essay e) {
-		// TODO Auto-generated method stub
-		int numOfParas = e.getNumOfParas();
-		int numOfSent;
-		Random r = new Random();
-		
-		for(int i = 0; i < numOfParas; i++){
-			Paragraph p = e.getParagraph(i);
-			numOfSent = p.getNumOfSents();
-			
-			for(int j = 0; j < numOfSent; j++){
-				Sentence s = p.getSentence(j);
-				TreebankLanguagePack tlp = new PennTreebankLanguagePack();
-			    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
-			    Tree parse = LibraryInitializer.LP.apply(s.toString());				
-				GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
-			    Collection<TypedDependency> c = gs.typedDependenciesCCprocessed(true);
-			    Collection<TreeGraphNode> tn = gs.getNodes();
-			    SemanticGraph dependency = new SemanticGraph(c, tn);
-			    Iterator<TypedDependency> it = c.iterator();
+				int numOfParas = e.getNumOfParas();
+				int numOfSent;
+				Random r = new Random();
 				
-			    SentenceProcessor.traverse(dependency.getFirstRoot(), dependency, 0, it);
-				
-			}
-			int chosenIdx = chooseSent(SentenceProcessor.sents);	
-			
-			this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
-			
-			System.out.println(SentenceProcessor.sents.get(chosenIdx));
-			System.out.println("Paragraph: " + i);
-		}
-		
+				for(int i = 0; i < numOfParas; i++){
+					Paragraph p = e.getParagraph(i);
+					numOfSent = p.getNumOfSents();
+					
+					for(int j = 0; j < numOfSent; j++){
+						Sentence s = p.getSentence(j);
+						TreebankLanguagePack tlp = new PennTreebankLanguagePack();
+					    GrammaticalStructureFactory gsf = tlp.grammaticalStructureFactory();
+					    Tree parse = LibraryInitializer.LP.apply(s.toString());				
+						GrammaticalStructure gs = gsf.newGrammaticalStructure(parse);
+					    Collection<TypedDependency> c = gs.typedDependenciesCCprocessed(true);
+					    Collection<TreeGraphNode> tn = gs.getNodes();
+					    SemanticGraph dependency = new SemanticGraph(c, tn);
+					    Iterator<TypedDependency> it = c.iterator();
+						
+					    SentenceProcessor.traverse(dependency.getFirstRoot(), dependency, 0, it);
+						
+					}
+					int chosenIdx = chooseSent(SentenceProcessor.sents);	
+					
+					this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
+					
+					System.out.println(SentenceProcessor.sents.get(chosenIdx));
+					System.out.println("Paragraph: " + i);
+				}
 		
 	}
 	
@@ -93,18 +111,6 @@ public class ParagraphHeading extends Question{
 		}
 		
 		return chosenIdx;
-	}
-	
-	@Override
-	public void questionGen(Paragraph p) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void questionGen(Sentence s) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

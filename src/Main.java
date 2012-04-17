@@ -81,11 +81,18 @@ public class Main {
 //		
 //		ParagraphHeading ph = new ParagraphHeading();		
 //		ph.questionGen(e);		
-		InfoIdentification ii = new InfoIdentification(1, 8);	
+		InfoIdentification ii = new InfoIdentification(e, 0);	
+		ParagraphHeading ph = new ParagraphHeading(e, 0);
+		System.out.println(ph.getNumOfQuestions());
+		for(int i = 0; i < ii.getInstructions().length; i++){
+			System.out.println(ii.getInstructions()[i]);
+		}
+		
+		
 		//ii.testEssay = e;
-		System.out.println(ii.getQuestion());
-		System.out.println(ii.getInstructions()[0]);
-		ii.questionGen(e);
+		//System.out.println(ii.getQuestion());
+		//System.out.println(ii.getInstructions()[0]);
+		ii.questionGen();
 		
 		ArrayList<Pair<Integer, String>> qa = ii.getQAset();
 		

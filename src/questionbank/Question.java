@@ -1,12 +1,10 @@
 package questionbank;
 
-import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
-import rita.wordnet.RiWordnet;
-
-public abstract class Question implements QuestionGenerator{
-	private enum QuestionType{
-		MatchingHeadings,
-		tfng, //True false not given
+public abstract class Question implements IQuestion{
+	public enum QuestionType{
+		ParagraphHeading,
+		TFNG, //True false not given
+		MCQ,
 		InfoIdentification,
 		cloze,
 	}

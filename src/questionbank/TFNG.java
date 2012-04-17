@@ -39,97 +39,94 @@ public class TFNG extends Question{
 	private boolean posRestructure;
 	private boolean posSub;
 	
-	public TFNG(){
-		
+	private Sentence s;
+	
+	public TFNG(){};
+	
+	public TFNG(Sentence s){
+		this.s = s;
 	}
 	
 	@Override
 	public void questionGen() {
 		// TODO Auto-generated method stub
+				String tokens[] = s.getTokenizedSent();
+				Random r = new Random();
+				int pickedSent = -1;
+				
+				StringBuffer sb = new StringBuffer("");
+				
+				substitute(tokens);
+				
+				for(int i = 0; i < tokens.length; i++){
+					sb.append(tokens[i]);
+					sb.append(" ");
+				}
+				ArrayList<Sentence>test = new ArrayList<Sentence>();
+				
+				test.add(new Sentence(sb.toString()));
+				
+				System.out.println(test);
+				
+				genSents(test);
+				
+				pickedSent = r.nextInt(SentenceProcessor.sents.size());
+				String sent = SentenceProcessor.sents.get(pickedSent).toString();
+				
+				this.ans = this.posRestructure && this.posSub;
+				int _ans = (this.ans)? 1 : 0;
+				this.questionAnsSet = new Pair<String, Integer>(sent, _ans);
+				
+				
+				System.out.println(this.questionAnsSet);
+				//System.out.println(sb.toString());
 		
 	}
 
-	@Override
-	public void questionGen(Essay e) {
-		// TODO Auto-generated method stub
-//		ArrayList<String> facts = FactEvaluator.getAllUniqueFacts(e.toString());
-//		int size = facts.size();
-//		boolean haveSent = false;
-//		if(size > 0){
-//			while(!haveSent){
-//				Random r = new Random();
-//				//Choose a random fact
-//				int chosenFact = r.nextInt(size);
-//				ArrayList<Sentence>sents = FactEvaluator.getSentenceAbout(facts.get(chosenFact), e);
-//				haveSent = genSents(sents);
-//			}
-//			System.out.println(SentenceProcessor.sents);
-//			
-//		}else{
-//			while(!haveSent){
-//				Random r = new Random();
-//				int chosenParagraph = r.nextInt(e.getNumOfParas());
-//				Paragraph p = e.getParagraph(chosenParagraph);
-//				Ranker ranker = new Ranker();
-//				ArrayList<Sentence> sents = ranker.getRankedSentences(p);
-//				haveSent = genSents(sents);
-//			}
-//			System.out.println(SentenceProcessor.sents);
-//		}
-		
-		
-	}
-
-	@Override
-	public void questionGen(Paragraph p) {
-		// TODO Auto-generated method stub
-//		Ranker r = new Ranker();
-//		ArrayList<Sentence> sents = r.getRankedSentences(p);
+//	@Override
+//	public void questionGen(Essay e) {
+//		// TODO Auto-generated method stub
+////		ArrayList<String> facts = FactEvaluator.getAllUniqueFacts(e.toString());
+////		int size = facts.size();
+////		boolean haveSent = false;
+////		if(size > 0){
+////			while(!haveSent){
+////				Random r = new Random();
+////				//Choose a random fact
+////				int chosenFact = r.nextInt(size);
+////				ArrayList<Sentence>sents = FactEvaluator.getSentenceAbout(facts.get(chosenFact), e);
+////				haveSent = genSents(sents);
+////			}
+////			System.out.println(SentenceProcessor.sents);
+////			
+////		}else{
+////			while(!haveSent){
+////				Random r = new Random();
+////				int chosenParagraph = r.nextInt(e.getNumOfParas());
+////				Paragraph p = e.getParagraph(chosenParagraph);
+////				Ranker ranker = new Ranker();
+////				ArrayList<Sentence> sents = ranker.getRankedSentences(p);
+////				haveSent = genSents(sents);
+////			}
+////			System.out.println(SentenceProcessor.sents);
+////		}
 //		
-//		genSents(sents);
 //		
-//		System.out.println(SentenceProcessor.sents);
-		
-		
-		
-	}
-	
-	@Override
-	public void questionGen(Sentence s) {
-		// TODO Auto-generated method stub
-		String tokens[] = s.getTokenizedSent();
-		Random r = new Random();
-		int pickedSent = -1;
-		
-		StringBuffer sb = new StringBuffer("");
-		
-		substitute(tokens);
-		
-		for(int i = 0; i < tokens.length; i++){
-			sb.append(tokens[i]);
-			sb.append(" ");
-		}
-		ArrayList<Sentence>test = new ArrayList<Sentence>();
-		
-		test.add(new Sentence(sb.toString()));
-		
-		System.out.println(test);
-		
-		genSents(test);
-		
-		pickedSent = r.nextInt(SentenceProcessor.sents.size());
-		String sent = SentenceProcessor.sents.get(pickedSent).toString();
-		
-		this.ans = this.posRestructure && this.posSub;
-		int _ans = (this.ans)? 1 : 0;
-		this.questionAnsSet = new Pair<String, Integer>(sent, _ans);
-		
-		
-		System.out.println(this.questionAnsSet);
-		//System.out.println(sb.toString());
-		
-		
-	}
+//	}
+//
+//	@Override
+//	public void questionGen(Paragraph p) {
+//		// TODO Auto-generated method stub
+////		Ranker r = new Ranker();
+////		ArrayList<Sentence> sents = r.getRankedSentences(p);
+////		
+////		genSents(sents);
+////		
+////		System.out.println(SentenceProcessor.sents);
+//		
+//		
+//		
+//	}
 	
 	private void substitute(String[] tokens){
 		Random r = new Random();
