@@ -7,6 +7,7 @@ public abstract class Question implements IQuestion{
 		MCQ,
 		InfoIdentification,
 		cloze,
+		SevenTypes
 	}
 	private String question;
 	private String[] questionSet;

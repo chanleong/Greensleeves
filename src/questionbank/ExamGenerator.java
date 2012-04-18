@@ -88,6 +88,12 @@ public class ExamGenerator implements Runnable{
 		
 	}
 	
+	private synchronized void genSevenTypes(Essay e, int numOf7Types){
+		SevenTypes seven = new SevenTypes(e, numOf7Types);
+		seven.questionGen();
+		questionList.add(seven);
+	}
+	
 	/**
 	 * 
 	 * @return The question list containing all the 40 questions

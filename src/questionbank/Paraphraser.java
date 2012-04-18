@@ -54,14 +54,18 @@ public class Paraphraser {
 		}
 		Tagparsing tp = new Tagparsing(workingSent);
 		for (int i = 0; i < 4; i++){
+			String posStr;
 			if ( (i == 0 || i == 1 || i == 2) && changes[i] ){ // nouns, verbs and adj
 				Integer n[];
 				switch(i){
 					case 0:		n = tp.getNouns();
+								posStr = "n";
 								break;
 					case 1:		n = tp.getVerbs();
+								posStr = "v";	
 								break;
 					default:	n = tp.getAdj();
+								posStr = "a";
 								break;
 				}
 				//Integer n[] = tp.getNouns();
@@ -75,8 +79,10 @@ public class Paraphraser {
 						System.out.println(ni.toString());
 						System.err.println(inter[ni]);
 						String sw = "";
+						
 						try{
-							sw = disco.similarWords(inter[ni]).words[1];
+							//sw = disco.similarWords(inter[ni]).words[1];
+							sw = ri.getAllSynonyms(inter[ni], posStr)[0];
 						}catch (NullPointerException e){
 							sw = inter[ni];
 						}
