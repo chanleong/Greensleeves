@@ -19,11 +19,16 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		LibraryInitializer li = new LibraryInitializer();
+		//LibraryInitializer li = new LibraryInitializer();
 		
 		Essay e = new Essay("lib/test1.txt");
-		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
-		tfng.questionGen();
+		Essay[] es = new Essay[3];
+		es[0] = e;
+		
+		ExamPaper ep = new ExamPaper(es, "IELTS");
+		ep.generate();
+//		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
+//		tfng.questionGen();
 //		
 //		//System.out.println(e.getParagraph(1).getSentenceStr(0));
 //		tfng.questionGen(e.getParagraph(0).getSentence(0));
@@ -70,7 +75,7 @@ public class Main {
 //		}
 		
 		
-//		MCQ mcq = new MCQ(e.getParagraph(1), 1);
+//		MCQ mcq = new MCQ(e.getParagraph(1));
 //		mcq.questionGen();
 //		
 //		System.out.println(mcq.getInstructions()[0]);
@@ -78,10 +83,9 @@ public class Main {
 //			System.out.println(mcq.getAnsPair().getRight()[i]);
 //		}
 //		System.out.println(mcq.getAns());
-//		
-//		
-//		ParagraphHeading ph = new ParagraphHeading();		
-//		ph.questionGen();		
+		
+		
+	
 //		InfoIdentification ii = new InfoIdentification(e, 0);	
 //		ParagraphHeading ph = new ParagraphHeading(e, 0);
 //		ph.questionGen();
@@ -96,7 +100,7 @@ public class Main {
 		//System.out.println(ii.getInstructions()[0]);
 //		ii.questionGen();
 //		
-//		ArrayList<Pair<Integer, String>> qa = ii.getQAset();
+//		ArrayList<Pair<Integer, String>> qa = ii.getQuestionAnsPair();
 //		
 //		for(int i = 0; i < qa.size(); i++){
 //			System.out.println(qa.get(i));

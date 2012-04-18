@@ -112,5 +112,9 @@ public class ParagraphHeading extends Question{
 		
 		return chosenIdx;
 	}
+	
+	public ArrayList<Pair<Integer, String>> getQuestionAnsPair(){
+		return this.questionAnsPair;
+	}
 
 }

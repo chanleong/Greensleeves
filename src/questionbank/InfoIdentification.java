@@ -219,7 +219,7 @@ public class InfoIdentification extends Question{
 		}
 	}
 	
-	public ArrayList<Pair<Integer, String>> getQAset(){
+	public ArrayList<Pair<Integer, String>> getQuestionAnsPair(){
 		return this.questionAnsPair;
 	}
 

@@ -23,7 +23,12 @@ public class MCQ extends Question{
 	private String[] instructions;
 	private Paragraph p;
 	
-	public MCQ(){};
+	public MCQ(Paragraph p){
+		this.p = p;
+		this.questionType = QuestionType.MCQ;
+		this.paragraphNum = p.getParagraphNum();
+		this.instructions = new String[1];
+	}
 	
 	public MCQ(Paragraph p, int paragraphNum){
 		this.p = p;

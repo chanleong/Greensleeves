@@ -33,7 +33,10 @@ public abstract class Question implements IQuestion{
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-	
+	/**
+	 * 
+	 * @return Question type
+	 */
 	public QuestionType getQuestionType(){
 		return this.questionType;
 	}
@@ -41,7 +44,13 @@ public abstract class Question implements IQuestion{
 	public String[] getInstructions() {
 		return this.instructions;
 	}
-
+	
+	/**
+	 * 
+	 * @param instructions Array of instruction of the question, in the case of MCQ, the instruction would be
+	 * the Subject + Action relationship or "Which of the following could be used to describe paragraph X?"
+	 * None for True/False/NG type question
+	 */
 	public void setInstruction(String[] instructions) {
 		this.instructions = instructions;
 	}
