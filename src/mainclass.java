@@ -18,7 +18,7 @@ public class mainclass {
 			
 		*/
 		try{
-			Paraphraser p = new Paraphraser("While emissions from new cars are far less harmful than they used to be, city streets and motorways are becoming more crowded than ever, often with older trucks, buses and taxis which emit excessive levels of smoke and fumes.");
+			questionbank.Paraphraser p = new Paraphraser("While emissions from new cars are far less harmful than they used to be, city streets and motorways are becoming more crowded than ever, often with older trucks, buses and taxis which emit excessive levels of smoke and fumes.");
 			p.setChanges(false, true, false, false, 0.7);
 			System.err.println("paraphrase");
 			System.out.println(p.paraphrase());
