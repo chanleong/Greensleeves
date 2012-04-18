@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/ritaWN/core1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/ritaWN/library/supportWN.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/ritaWN/library/ritaWN.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/opennlp-maxent-3.0.2-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/opennlp-tools-1.5.2-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/opennlp-uima-1.5.2-incubating.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/jwnl-1.3.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/stanford-corenlp-2012-04-03.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/simplenlgv4.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/stanford-parser-2012-03-09-models.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/dom4j/jaxme-api-0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/dom4j/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/dom4j/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/AlchemyAPI.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Raymond/git/Greensleeves/Greensleeves/lib/jar/disco-1.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
