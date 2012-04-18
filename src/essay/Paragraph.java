@@ -105,4 +105,8 @@ public class Paragraph {
 	public int getNumOfSents(){
 		return this.sentences.size();
 	}
+	
+	public int getParagraphNum(){
+		return this.paragraphNum;
+	}
 }

@@ -1,3 +1,5 @@
+import itext.PDFFiller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,10 +21,38 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		LibraryInitializer li = new LibraryInitializer();
+//		LibraryInitializer li = new LibraryInitializer();
+		
 		
 		Essay e = new Essay("lib/test1.txt");
-//		TFNG tfng = new TFNG();
+		Essay[] es = new Essay[1];
+		es[0] = e;
+		
+//		ExamGenerator eg = new ExamGenerator(es);
+//		Thread t = new Thread(eg);
+//		t.start();
+//		
+//
+//		try {
+//			t.join();
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		for(int i = 0; i < eg.getQuestionList().size(); i++){
+//			Question q = eg.getQuestionList().get(i);
+//			
+//			System.out.println(q.questionType);
+//		}
+//		System.out.println(eg.getQuestionList().size());
+		
+//		es[0] = e;
+//		
+		PDFFiller ep = new PDFFiller(es, "IELTS");
+		ep.generate();
+//		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
+//		tfng.questionGen();
 //		
 //		//System.out.println(e.getParagraph(1).getSentenceStr(0));
 //		tfng.questionGen(e.getParagraph(0).getSentence(0));
@@ -69,29 +99,36 @@ public class Main {
 //		}
 		
 		
-//		MCQ mcq = new MCQ();
-//		mcq.questionGen(e.getParagraph(1));
+//		MCQ mcq = new MCQ(e.getParagraph(1));
+//		mcq.questionGen();
 //		
-//		System.out.println(mcq.getAnsPair().getLeft());
+//		System.out.println(mcq.getInstructions()[0]);
 //		for(int i = 0; i < mcq.getAnsPair().getRight().length; i++){
 //			System.out.println(mcq.getAnsPair().getRight()[i]);
 //		}
 //		System.out.println(mcq.getAns());
-//		
-//		
-//		ParagraphHeading ph = new ParagraphHeading();		
-//		ph.questionGen(e);		
-		InfoIdentification ii = new InfoIdentification(1, 8);	
+		
+		
+	
+//		InfoIdentification ii = new InfoIdentification(e, 0);	
+//		ParagraphHeading ph = new ParagraphHeading(e, 0);
+//		ph.questionGen();
+//		System.out.println(ph.getNumOfQuestions());
+//		for(int i = 0; i < ii.getInstructions().length; i++){
+//			System.out.println(ii.getInstructions()[i]);
+//		}
+		
+		
 		//ii.testEssay = e;
-		System.out.println(ii.getQuestion());
-		System.out.println(ii.getInstructions()[0]);
-		ii.questionGen(e);
-		
-		ArrayList<Pair<Integer, String>> qa = ii.getQAset();
-		
-		for(int i = 0; i < qa.size(); i++){
-			System.out.println(qa.get(i));
-		}
+		//System.out.println(ii.getQuestion());
+		//System.out.println(ii.getInstructions()[0]);
+//		ii.questionGen();
+//		
+//		ArrayList<Pair<Integer, String>> qa = ii.getQuestionAnsPair();
+//		
+//		for(int i = 0; i < qa.size(); i++){
+//			System.out.println(qa.get(i));
+//		}
 		
 //		String[] jj = ii.getQuestionSet();
 //		

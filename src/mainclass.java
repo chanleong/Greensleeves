@@ -1,3 +1,5 @@
+import questionbank.*;
+
 
 public class mainclass {
 
