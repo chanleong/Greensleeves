@@ -1,3 +1,5 @@
+import itext.PDFFiller;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,14 +21,25 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		//LibraryInitializer li = new LibraryInitializer();
+		LibraryInitializer li = new LibraryInitializer();
 		
 		Essay e = new Essay("lib/test1.txt");
-		Essay[] es = new Essay[3];
+		Essay[] es = new Essay[1];
 		es[0] = e;
 		
-		ExamPaper ep = new ExamPaper(es, "IELTS");
-		ep.generate();
+		ExamGenerator eg = new ExamGenerator(es);
+		eg.genQuestion();
+		
+		for(int i = 0; i < eg.getQuestionList().size(); i++){
+			Question q = eg.getQuestionList().get(i);
+			
+			System.out.println(q.questionType);
+		}
+		
+//		es[0] = e;
+//		
+//		PDFFiller ep = new PDFFiller(es, "IELTS");
+//		ep.generate();
 //		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
 //		tfng.questionGen();
 //		

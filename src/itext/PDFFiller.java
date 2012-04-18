@@ -1,15 +1,17 @@
-package essay;
+package itext;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import essay.Essay;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import questionbank.Question.QuestionType;
 
-public class ExamPaper {
+public class PDFFiller {
 	private Essay[] essays;
 	private Document doc;
 	private String docName;
@@ -22,7 +24,7 @@ public class ExamPaper {
 	/**
 	 * An an exam paper only consist of 3 essays
 	 */
-	public ExamPaper(Essay[] essays, String docName){
+	public PDFFiller(Essay[] essays, String docName){
 		this.essays = essays; 
 		this.docName = docName;
 		this.doc = new Document(PageSize.A4, 60, 60, 60, 60);
