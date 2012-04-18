@@ -1,29 +1,53 @@
 package itext;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import essay.Essay;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
+import questionbank.*;
 import questionbank.Question.QuestionType;
 
 public class PDFFiller {
 	private Essay[] essays;
 	private Document doc;
 	private String docName;
+	private ArrayList<Question> questionList;
 	
+	//Common font
 	private Font normalFont = new Font(Font.FontFamily.HELVETICA, 12);
 	private Font italicFont = new Font(Font.FontFamily.HELVETICA, 12, Font.ITALIC);
+	private Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 	private Font instructFont = new Font(Font.FontFamily.TIMES_ROMAN, 13, Font.ITALIC);
 	private Font boldQuestionNum = new Font(Font.FontFamily.TIMES_ROMAN, 13, Font.ITALIC|Font.BOLD);
+	private Font boldItalic = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLDITALIC);
 	
 	/**
 	 * An an exam paper only consist of 3 essays
 	 */
+	public PDFFiller(Essay[] essays, String docName, ArrayList<Question> questionList){
+		this.essays = essays; 
+		this.docName = docName;
+		this.doc = new Document(PageSize.A4, 60, 60, 60, 60);
+		
+	
+		
+		try {
+			PdfWriter.getInstance(this.doc,
+					new FileOutputStream(docName + ".pdf"));
+			doc.open();
+
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public PDFFiller(Essay[] essays, String docName){
 		this.essays = essays; 
 		this.docName = docName;
@@ -49,15 +73,31 @@ public class PDFFiller {
 	}
 	
 	public void generate(){
+		//Passage 1
 		fillHeader(0, 1, 13);
 		Font headingFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD|Font.UNDERLINE);
 	    Font sectionFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
 		fillEssay(this.essays[0], 0, headingFont, sectionFont, false);
-		fillQuestionHeading(0, QuestionType.TFNG, 13, 25);
+		this.doc.newPage();
+		
+		int size = this.questionList.size();
+		for(int i = 0; i < size; i++){
+			Question q = this.questionList.get(i);
+			if(q instanceof InfoIdentification){
+				InfoIdentification ii = (InfoIdentification)q;
+				((InfoIdentification) q).getQuestionAnsPair();
+			}
+			
+		}
+		
+		fillQuestionHeading(0, QuestionType.InfoIdentification, 1, 13);
+		fillQuestionHeading(0, QuestionType.ParagraphHeading, 1, 13);
+		fillQuestionHeading(0, QuestionType.TFNG, 1, 13);
 		
 		this.doc.close();
 	}
 	
+	//Filling the header of the passage, 1. Essay number 2.Starting question 3.Ending question
 	private void fillHeader(int essayNum, int startQ, int endQ){
 		Font readingPassageFont = new Font(Font.FontFamily.HELVETICA, 17, Font.BOLD);
 		
@@ -85,6 +125,7 @@ public class PDFFiller {
 		}
 	}
 	
+	//Filling the essay inside
 	private void fillEssay(Essay e, int essayNum, 
 			Font titleFont, Font sectionFont, boolean showSection)
 	{		
@@ -109,6 +150,7 @@ public class PDFFiller {
 		}
 	}
 	
+	//Fill in paragraph
 	private void newParagraph(String paragraphStr, Font sectionFont, 
 			int paragraphNum, boolean showSection)
 	{
@@ -130,22 +172,69 @@ public class PDFFiller {
 		}
 	}
 	
+	//Fill question heading
 	private void fillQuestionHeading(int essayNum, QuestionType qType, 
 			int startQ, int endQ)
 	{
 		int realEssayNum = essayNum + 1;
 		try{
+			addQuestionNum(startQ, endQ);
 			
 			if(qType == QuestionType.InfoIdentification){
+				Paragraph[] instructions = new Paragraph[4];
+				for(int i = 0; i < instructions.length; i++) instructions[i] = new Paragraph();
+				
+				
+				int numOfParas = this.essays[essayNum].getNumOfParas();
+				char startChar = Question.getQuestionCharacter(0);
+				char endChar = Question.getQuestionCharacter(numOfParas-1);
+				
+				instructions[0].add(new Phrase("Reading Passage " + realEssayNum + " has " + numOfParas 
+						+ " paragraphs labelled " ));
+				instructions[0].add(new Phrase(startChar + "-" + endChar , boldFont));
+				instructions[0].setSpacingAfter(10);
+				
+				instructions[1].add(new Phrase("Which paragraphs contains the following information?"));
+				instructions[1].setSpacingAfter(10);
+				
+				instructions[2].add(new Phrase("Write the correct letter ", italicFont));
+				instructions[2].add(new Phrase(startChar + "-" + endChar , boldItalic));
+				instructions[2].add(new Phrase(" in boxes " + startQ + "-" + endQ + " on your answer sheet.", italicFont));
+				
+				
+				instructions[3].add(new Phrase("NB ", boldItalic));
+				instructions[3].add(new Phrase("You may use any letter more than once.", italicFont));
+				instructions[3].setSpacingAfter(10);
+				
+				for(int i = 0; i < instructions.length; i++) this.doc.add(instructions[i]);
 				
 			}else if(qType == QuestionType.ParagraphHeading){
+				Paragraph[] instructions = new Paragraph[3];
+				for(int i = 0; i < instructions.length; i++) instructions[i] = new Paragraph();
+				
+				int numOfParas = this.essays[essayNum].getNumOfParas();
+				char startChar = Question.getQuestionCharacter(0);
+				char endChar = Question.getQuestionCharacter(numOfParas-1);
+				
+				instructions[0].add(new Phrase("Reading Passage " + realEssayNum + " has " + numOfParas 
+						+ " sections, " ));
+				instructions[0].add(new Phrase(startChar + "-" + endChar , boldFont));
+				instructions[0].setSpacingAfter(10);
+				
+				instructions[1].add(new Phrase("Choose the correct heading for sections  ", italicFont));
+				instructions[1].add(new Phrase(startChar + "-" + endChar, boldItalic));
+				instructions[1].add(new Phrase(" from the list of headings below.", italicFont));
+				instructions[1].setSpacingAfter(10);
+				
+				instructions[2].add(new Phrase("Write the correct number " + startQ + "-" + endQ + " in boxes "
+						+ startQ + "-" + endQ +" on your answer sheet.", italicFont));
+				instructions[2].setSpacingAfter(10);
+				
+				for(int i = 0; i < instructions.length; i++) this.doc.add(instructions[i]);
 				
 			}else if(qType == QuestionType.MCQ){
 				
 			}else if(qType == QuestionType.TFNG){
-				Font tfngFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLDITALIC);
-				
-				addQuestionNum(startQ, endQ);
 				
 				Paragraph instruction = new Paragraph();
 				Paragraph instruction2 = new Paragraph();
@@ -162,15 +251,15 @@ public class PDFFiller {
 				instruction2.add(new Phrase("In boxes " + startQ + "-" + endQ + " on your answer sheet, write", italicFont));
 				instruction2.setSpacingAfter(10);
 				
-				trueInstruct.add(new Phrase("TRUE", tfngFont));
+				trueInstruct.add(new Phrase("TRUE", boldItalic));
 				trueInstruct.add(new Phrase("    if the statement agrees with the information", italicFont));
 				trueInstruct.setIndentationLeft(20);
 				
-				falseInstruct.add(new Phrase("FALSE", tfngFont));
+				falseInstruct.add(new Phrase("FALSE", boldItalic));
 				falseInstruct.add(new Phrase("    if the statement contradicts the information", italicFont));
 				falseInstruct.setIndentationLeft(20);
 				
-				ngInstruct.add(new Phrase("NOT GIVEN", tfngFont));
+				ngInstruct.add(new Phrase("NOT GIVEN", boldItalic));
 				ngInstruct.add(new Phrase("    if there is no information on this", italicFont));
 				ngInstruct.setIndentationLeft(20);
 				
@@ -182,10 +271,17 @@ public class PDFFiller {
 			}
 			
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}
 	}
 	
+	private void fillInfoIdentification(int qNum, String info){
+		Paragraph paragraph = new Paragraph();
+		
+		
+	}
+	
+	//Add the "Question x-y" headings
 	private void addQuestionNum(int startQ, int endQ){
 		Paragraph questionNum = new Paragraph();
 		questionNum.add(new Phrase("Question " + startQ + "-" + endQ, instructFont));

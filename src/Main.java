@@ -21,25 +21,36 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		LibraryInitializer li = new LibraryInitializer();
+//		LibraryInitializer li = new LibraryInitializer();
+		
 		
 		Essay e = new Essay("lib/test1.txt");
 		Essay[] es = new Essay[1];
 		es[0] = e;
 		
-		ExamGenerator eg = new ExamGenerator(es);
-		eg.genQuestion();
-		
-		for(int i = 0; i < eg.getQuestionList().size(); i++){
-			Question q = eg.getQuestionList().get(i);
-			
-			System.out.println(q.questionType);
-		}
+//		ExamGenerator eg = new ExamGenerator(es);
+//		Thread t = new Thread(eg);
+//		t.start();
+//		
+//
+//		try {
+//			t.join();
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		for(int i = 0; i < eg.getQuestionList().size(); i++){
+//			Question q = eg.getQuestionList().get(i);
+//			
+//			System.out.println(q.questionType);
+//		}
+//		System.out.println(eg.getQuestionList().size());
 		
 //		es[0] = e;
 //		
-//		PDFFiller ep = new PDFFiller(es, "IELTS");
-//		ep.generate();
+		PDFFiller ep = new PDFFiller(es, "IELTS");
+		ep.generate();
 //		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
 //		tfng.questionGen();
 //		

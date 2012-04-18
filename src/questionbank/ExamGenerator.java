@@ -6,7 +6,7 @@ import java.util.Random;
 
 import essay.*;
 
-public class ExamGenerator {
+public class ExamGenerator implements Runnable{
 	private Essay[] essays;
 	private ArrayList<Question> questionList;
 	
@@ -26,37 +26,38 @@ public class ExamGenerator {
 	/**
 	 * Generate question for the whole exam paper
 	 */
-	public void genQuestion(){
-		for(int i = 0; i < this.essays.length; i++){		
+	public synchronized void genQuestion(){
+		for(int i = 0; i < this.essays.length; i++){
 			if(i == 0){
 				genInfo(this.essays[i], i);
+				//genParaHeading(essays[i], i);
 				this.questionQuota[i] -= essays[i].getNumOfParas();
 				//For the remaining quota, generate MC
 				genMCQ(essays[i], this.questionQuota[i]);
 			}else if(i == 1){
 				genParaHeading(essays[i], i);
 				this.questionQuota[i] -= essays[i].getNumOfParas();
-				
-				
+
+
 			}else if(i == 2){
-				
+
 			}
 		}
 	}
 	
-	private void genInfo(Essay e, int essayNum){
+	private synchronized void genInfo(Essay e, int essayNum){
 		InfoIdentification ii = new InfoIdentification(e, essayNum);
 		ii.questionGen();
 		questionList.add(ii);
 	}
 	
-	private void genParaHeading(Essay e, int essayNum){
+	private synchronized void genParaHeading(Essay e, int essayNum){
 		ParagraphHeading ph = new ParagraphHeading(e, essayNum); 
 		ph.questionGen();
 		questionList.add(ph);
 	}
 	
-	private void genMCQ(Essay e, int numOfMCQs){
+	private synchronized void genMCQ(Essay e, int numOfMCQs){
 		int numOfParahraphs = e.getNumOfParas();
 		int[] paragraphs = new int[numOfParahraphs];
 		
@@ -70,7 +71,7 @@ public class ExamGenerator {
 		}
 	}
 	
-	private void genTFNG(Essay e, int numOfTFNGs){
+	private synchronized void genTFNG(Essay e, int numOfTFNGs){
 		int numOfParahraphs = e.getNumOfParas();
 		int[] paragraphs = new int[numOfParahraphs];
 		Ranker r = new Ranker();
@@ -91,7 +92,7 @@ public class ExamGenerator {
 	 * 
 	 * @return The question list containing all the 40 questions
 	 */
-	public ArrayList<Question> getQuestionList(){
+	public synchronized ArrayList<Question> getQuestionList(){
 		return this.questionList;
 	}
 	
@@ -105,6 +106,15 @@ public class ExamGenerator {
 			arr[chosen] = arr[i];
 			arr[i] = tmp;
 		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		synchronized(this){
+			genQuestion();
+		}
+		
 	}
 	
 	

@@ -19,7 +19,7 @@ import essay.Sentence;
 public class MCQ extends Question{
 	
 	private int ans, paragraphNum;
-	private Pair<Integer, String[]> ansPair;
+	private Pair<Integer, String[]> questionAnsPair;
 	private String[] instructions;
 	private Paragraph p;
 	
@@ -115,7 +115,7 @@ public class MCQ extends Question{
 				
 				this.instructions[0] = pickedSent;
 				super.setInstruction(this.instructions);
-				this.ansPair = new Pair<Integer, String[]>(_pickedSent, choices);
+				this.questionAnsPair = new Pair<Integer, String[]>(_pickedSent, choices);
 
 
 
@@ -144,7 +144,7 @@ public class MCQ extends Question{
 				
 				this.instructions[0] = instruction;
 				super.setInstruction(this.instructions);
-				this.ansPair = new Pair<Integer, String[]>(this.ans, choices);
+				this.questionAnsPair = new Pair<Integer, String[]>(this.ans, choices);
 			}
 			//SentenceProcessor.extractConcept(p.getParagraph());
 		} catch (Exception e) {
@@ -175,8 +175,8 @@ public class MCQ extends Question{
 		super.setAns(this.ans);
 	}
 	
-	public Pair<Integer, String[]> getAnsPair(){
-		return this.ansPair;
+	public Pair<Integer, String[]> getQuestionAnsPair(){
+		return this.questionAnsPair;
 	}
 
 }
