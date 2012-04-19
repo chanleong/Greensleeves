@@ -33,6 +33,12 @@ public class SevenTypes extends Question {
 		 * >
 		 */
 
+	private boolean debug = false;
+	
+	public void toggleDebug(){
+		debug = !debug;
+	}
+	
 	/**
 	 * 
 	 */
@@ -50,6 +56,9 @@ public class SevenTypes extends Question {
 		this.setInstruction(instruc);
 	}
 
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see questionbank.IQuestion#questionGen()
 	 */
@@ -110,7 +119,7 @@ public class SevenTypes extends Question {
 		//choices.addAll(ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum+2));
 		
 		try {
-			for (String i : (ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum+2))){
+			for (String i : (ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum))){
 				choices.add(i);
 			}
 		} catch (IOException e) {
@@ -123,15 +132,18 @@ public class SevenTypes extends Question {
 
 			String question = (tempSelectedQs.get(r.nextInt(tempSelectedQs.size())).toString());
 			question = paraphrase(question, f, targetType);
+			System.out.println(question);
 			Integer choiceNum = choices.indexOf(f);
 			Pair<String, Integer> pp = new Pair<String, Integer>(question, choiceNum);
 			selectedQs.add(pp);
-			
+			System.out.println(choiceNum.toString());
 			
 		}
 		
 		questionAnsPair.setLeft(selectedQs);
 		questionAnsPair.setRight(choices);
+		
+
 
 		instruc[0] = "Look at the following information and the list of " + targetType.toString().toLowerCase() + " below.";
 		instruc[1] = "Match each information with the correct "+targetType.toString().toLowerCase()+".";
@@ -139,6 +151,11 @@ public class SevenTypes extends Question {
 		instruc[3] = "List of " + targetType.toString().toLowerCase();
 		
 		this.setInstruction(instruc);
+		
+		System.out.println(instruc[3]);
+		for (String c : choices){
+			System.out.println(c);
+		}
 		
 		/*
 		for (int i = 0; i < qnNum; i++){

@@ -21,7 +21,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-//		LibraryInitializer li = new LibraryInitializer();
+		LibraryInitializer li = new LibraryInitializer();
 		
 		
 		Essay e = new Essay("lib/test1.txt");
