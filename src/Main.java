@@ -46,7 +46,7 @@ public class Main {
 		}
 		
 		//Generation finished, ready to get the Question list
-		
+		//Here is an example loop
 		
 		for(int i = 0; i < eg.getQuestionList().size(); i++){
 			Question q = eg.getQuestionList().get(i);
@@ -110,8 +110,12 @@ public class Main {
 		
 //		es[0] = e;
 //		
-		PDFFiller ep = new PDFFiller(es, "IELTS");
+		
+		//PDFFiller class, you need to 
+		PDFFiller ep = new PDFFiller(es, "IELTS", eg.getQuestionList());
 		ep.generate();
+		
+		
 //		TFNG tfng = new TFNG(e.getParagraph(1).getSentence(0));
 //		tfng.questionGen();
 //		
