@@ -21,30 +21,91 @@ public class Main {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-//		LibraryInitializer li = new LibraryInitializer();
+		//Loading library for the programme
+		LibraryInitializer li = new LibraryInitializer();
 		
-		
+		//Load essay
 		Essay e = new Essay("lib/test1.txt");
 		Essay[] es = new Essay[1];
 		es[0] = e;
 		
-//		ExamGenerator eg = new ExamGenerator(es);
-//		Thread t = new Thread(eg);
-//		t.start();
-//		
-//
-//		try {
-//			t.join();
-//		} catch (InterruptedException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
-//		for(int i = 0; i < eg.getQuestionList().size(); i++){
-//			Question q = eg.getQuestionList().get(i);
-//			
-//			System.out.println(q.questionType);
-//		}
+		//Generate exam questions
+		ExamGenerator eg = new ExamGenerator(es);
+		
+		//Start a new thread for ExamGenerator
+		Thread t = new Thread(eg);
+		t.start();
+		
+		
+		//Waiting for the ExamGenerator thread to finish its generation
+		try {
+			t.join();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//Generation finished, ready to get the Question list
+		
+		
+		for(int i = 0; i < eg.getQuestionList().size(); i++){
+			Question q = eg.getQuestionList().get(i);
+			
+			//If Question q is an instance of InfoIdentification object
+			if(q instanceof InfoIdentification){
+				InfoIdentification ii = (InfoIdentification)q;
+				
+				//Getting Question and Answer pair,
+				//If the passage have 8 paragraphs, the array list size will be 8,
+				//each Pair<Integer, String> contains an answer and question
+				//Integer here indicates the correct paragraph and String here is the paragraph description
+				ArrayList<Pair<Integer, String>> QAPair = ii.getQuestionAnsPair();
+				
+				
+			}else if(q instanceof ParagraphHeading){
+				//Getting Question and Answer pair, similar to InfoIdentification
+				//If the passage have 8 paragraphs, the array list size will be 8,
+				//each Pair<Integer, String> contains an answer and question
+				//Integer here indicates the correct paragraph and String here is the paragraph description
+				ParagraphHeading ph = (ParagraphHeading)q;
+				ArrayList<Pair<Integer, String>> QAPair = ph.getQuestionAnsPair();
+				
+				
+			}else if(q instanceof MCQ){
+				MCQ mcq = (MCQ)q;
+				
+				//For MCQ, it would only return 1 question, unlike InfoIdentification and ParagraphHeading
+				//The return type is Pair<Integer, String[]>, Integer here again is the answer,
+				//String[] is a set of MC choices
+				Pair<Integer, String[]> QAPair = mcq.getQuestionAnsPair();
+				
+				//Instruct here would be the question itself
+				//It is a length 1 array
+				//e.g.
+				//Which of the following paragraph contains information X? <-- Instruction
+				//
+				//(The following shows the Pair<Integer, String[]> structure)
+				//[1,  	<---Answer is 1, that means Choice B
+				//		(Below is a set of choices represented by String[])
+				//		Paragraph A
+				//		Paragraph B
+				//		Paragraph C
+				//		Paragraph D
+				//]
+				String[] instruct = mcq.getInstructions();
+			}else if(q instanceof TFNG){
+				TFNG tfng = (TFNG)q;
+				
+				//For True false not given type, similar to MCQ, it would just return 1 question
+				//But the structure is simpler
+				//Integer represents the answer again, 0:False, 1:True, 2:Not give (But you may ignore 2 here as I'm not going to implement NG)
+				
+				Pair<Integer, String> QAPair = tfng.getQuestionAnsPair();
+				
+			}
+			
+			System.out.println(q.questionType);
+		}
 //		System.out.println(eg.getQuestionList().size());
 		
 //		es[0] = e;
