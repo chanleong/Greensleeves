@@ -111,7 +111,7 @@ public class Main {
 //		es[0] = e;
 //		
 		
-		//PDFFiller class, you need to 
+		//PDFFiller class, you need to feed the question list to constructor
 		PDFFiller ep = new PDFFiller(es, "IELTS", eg.getQuestionList());
 		ep.generate();
 		
