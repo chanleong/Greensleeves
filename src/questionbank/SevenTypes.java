@@ -22,6 +22,7 @@ public class SevenTypes extends Question {
 	
 	ArrayList<Pair<String, Integer>> selectedQs = new ArrayList<Pair<String, Integer>>();
 	//Pair <String, Integer> questionFactPair;
+	String instruc[] = new String[4];
 	
 	Pair<ArrayList<Pair<String, Integer>>, ArrayList<String>> questionAnsPair ;
 		/* Pair<
@@ -44,7 +45,7 @@ public class SevenTypes extends Question {
 		this.essay = essay;
 		this.qnNum = qnNum;
 		this.questionType = Question.QuestionType.SevenTypes;
-		String instruc[] = new String[1];
+		
 		instruc[0] = "this is an instruction";
 		this.setInstruction(instruc);
 	}
@@ -121,16 +122,23 @@ public class SevenTypes extends Question {
 			ArrayList<Sentence> tempSelectedQs = FactEvaluator.getSentenceAbout(f, essay);
 
 			String question = (tempSelectedQs.get(r.nextInt(tempSelectedQs.size())).toString());
+			question = paraphrase(question, f, targetType);
 			Integer choiceNum = choices.indexOf(f);
 			Pair<String, Integer> pp = new Pair<String, Integer>(question, choiceNum);
 			selectedQs.add(pp);
+			
+			
 		}
 		
 		questionAnsPair.setLeft(selectedQs);
 		questionAnsPair.setRight(choices);
 
+		instruc[0] = "Look at the following information and the list of " + targetType.toString().toLowerCase() + " below.";
+		instruc[1] = "Match each information with the correct "+targetType.toString().toLowerCase()+".";
+		instruc[2] = "Write the correct letter in boxes on your answer sheet.";
+		instruc[3] = "List of " + targetType.toString().toLowerCase();
 		
-		
+		this.setInstruction(instruc);
 		
 		/*
 		for (int i = 0; i < qnNum; i++){
@@ -149,7 +157,48 @@ public class SevenTypes extends Question {
 		
 	}
 	
-	
+	private String paraphrase(String input, String fact, FactEvaluator.type targetType){
+		String result = input;
+		String replacement;
+		switch (targetType){
+		case DATE:
+			replacement = "when";
+			break;
+		case LOCATION:
+			replacement = "where";
+			break;
+		case MONEY:
+			replacement = "how much";
+			break;
+		case ORGANIZATION:
+			replacement = "who";
+			break;
+		case PERCENT:
+			replacement = "how many";
+			break;
+		case PERSON:
+			replacement = "who";
+			break;
+		case TIME:
+			replacement = "when";
+			break;
+		default:
+			replacement = fact;
+			break;
+		}
+		result.replaceAll(fact, replacement);
+		try {
+			Paraphraser p = new Paraphraser(result);
+			p.setChanges(false, true, true, false, 0.7);
+			result = p.paraphrase();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
 
 	public Pair<ArrayList<Pair<String, Integer>>, ArrayList<String>> getQuestionAnsPair(){
 		return this.questionAnsPair;
