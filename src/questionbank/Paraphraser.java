@@ -25,7 +25,7 @@ public class Paraphraser {
 	RiWordnet ri;
 	
 	public Paraphraser(String workingSent) throws IOException{
-		disco = new DISCO(parameters.disco.discoDir, false);
+		disco = new DISCO(Parameters.disco.discoDir, false);
 		this.workingSent = workingSent;
 		ri = new RiWordnet();
 		

@@ -30,17 +30,17 @@ public class ExamGenerator implements Runnable{
 		for(int i = 0; i < this.essays.length; i++){
 			if(i == 0){
 				genInfo(this.essays[i], i);
-				//genParaHeading(essays[i], i);
-				this.questionQuota[i] -= essays[i].getNumOfParas();
-				//For the remaining quota, generate MC
-				genMCQ(essays[i], this.questionQuota[i]);
-			}else if(i == 1){
 				genParaHeading(essays[i], i);
-				this.questionQuota[i] -= essays[i].getNumOfParas();
+//				this.questionQuota[i] -= essays[i].getNumOfParas();
+//				//For the remaining quota, generate MC
+//				genMCQ(essays[i], this.questionQuota[i]);
+			}else if(i == 1){
+//				genParaHeading(essays[i], i);
+//				this.questionQuota[i] -= essays[i].getNumOfParas();
 
 
 			}else if(i == 2){
-
+				//genMCQ(essays[i], this.questionQuota[i]-10);
 			}
 		}
 	}

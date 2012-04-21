@@ -77,10 +77,13 @@ public class ParagraphHeading extends Question{
 
 			}
 			int chosenIdx = chooseSent(SentenceProcessor.sents);	
+			if(SentenceProcessor.sents.size() != 0){
+				this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
+				System.out.println(SentenceProcessor.sents.get(chosenIdx));
+			}else
+				this.questionAnsPair.add(new Pair<Integer, String>(i, ""));
 
-			this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
-
-			System.out.println(SentenceProcessor.sents.get(chosenIdx));
+			
 			System.out.println("Paragraph: " + i);
 		}
 		

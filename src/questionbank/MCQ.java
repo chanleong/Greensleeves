@@ -54,7 +54,8 @@ public class MCQ extends Question{
 				chosenArray[i] = -1; //Init chosen array
 				component = relns[i].split(",");
 				String obj = component[2];
-				if(!obj.equals("")){
+				
+				if(!obj.equals(" ")){
 					chosenArray[i] = i;
 					objCount++;
 				}

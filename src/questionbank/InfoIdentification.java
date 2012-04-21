@@ -113,16 +113,14 @@ public class InfoIdentification extends Question{
 					String subj = component[0];
 					String act = component[1];
 					String obj = component[2];
-					String tense = component[3];
-					String neg = "";
-					if(component.length == 5) neg = component[4];
+					String neg = component[4];
 
 					if(!obj.equals("")){
 						sent = nlgFactory.createClause(subj, act, obj);
-						if(!neg.equals("")) sent.setFeature(Feature.NEGATED, true);
+						if(!neg.equals(" ")) sent.setFeature(Feature.NEGATED, true);
 					}else{
 						sent = nlgFactory.createClause(subj, act);
-						if(!neg.equals("")) sent.setFeature(Feature.NEGATED, true);
+						if(!neg.equals(" ")) sent.setFeature(Feature.NEGATED, true);
 					}
 
 					String output = realiser.realiseSentence(sent);
