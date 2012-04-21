@@ -30,26 +30,28 @@ public class ExamGenerator implements Runnable{
 	 * Generate question for the whole exam paper
 	 */
 	public synchronized void genQuestion(){
-		if(GUI.qts != null)
+//		if(GUI.qts != null)
 		for(int i = 0; i < this.essays.length; i++){
 			if(i == 0){
-				ArrayList<QuestionType> qt = GUI.qts.get(0);
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
 				
-				
+				chooseQuestionType(i, qt);
 //				genInfo(this.essays[i], i);
 //				genParaHeading(essays[i], i);
 //				this.questionQuota[i] -= essays[i].getNumOfParas();
 //				//For the remaining quota, generate MC
-//				genMCQ(essays[i], this.questionQuota[i]);
-				
+//				genMCQ(essays[i], this.questionQuota[i]);				
 				
 			}else if(i == 1){
 //				genParaHeading(essays[i], i);
 //				this.questionQuota[i] -= essays[i].getNumOfParas();
-				
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
+//				chooseQuestionType(i, qt);
 
 			}else if(i == 2){
 				//genMCQ(essays[i], this.questionQuota[i]-10);
+//				ArrayList<QuestionType> qt = GUI.qts.get(i);
+//				chooseQuestionType(i, qt);
 			}
 		}
 	}
@@ -62,14 +64,36 @@ public class ExamGenerator implements Runnable{
 			genParaHeading(essays[i], i);
 			this.questionQuota[i] -= essays[i].getNumOfParas();
 		}else if(qt.get(0) == QuestionType.MCQ){
-			genMCQ(essays[i], this.questionQuota[i]/2);
-			this.questionQuota[i] -= essays[i].getNumOfParas();
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genMCQ(essays[i], min);
+			this.questionQuota[i] -= min;
 		}else if(qt.get(0) == QuestionType.TFNG){
-			genTFNG(essays[i], this.questionQuota[i]/2);
-			this.questionQuota[i] -= essays[i].getNumOfParas();
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genTFNG(essays[i], min);
+			this.questionQuota[i] -= min;
 		}
 		
 		if(qt.get(1) == QuestionType.ParagraphHeading){
+			genParaHeading(essays[i], i);
+		}else if(qt.get(1) == QuestionType.MCQ){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genMCQ(essays[i], min);
+		}else if(qt.get(1) == QuestionType.TFNG){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genTFNG(essays[i], min);
+		}else if(qt.get(1) == QuestionType.SevenTypes){
 			
 		}
 	}
@@ -150,7 +174,11 @@ public class ExamGenerator implements Runnable{
 			arr[i] = tmp;
 		}
 	}
-
+	
+	private int min(int i, int j){
+		return (i >= j) ? j : i;
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

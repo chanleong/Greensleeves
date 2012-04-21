@@ -16,6 +16,7 @@ import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.trees.semgraph.SemanticGraph;
 import essay.Essay;
 import essay.Paragraph;
+import essay.Ranker;
 import essay.Sentence;
 
 public class ParagraphHeading extends Question{
@@ -80,8 +81,17 @@ public class ParagraphHeading extends Question{
 			if(SentenceProcessor.sents.size() != 0){
 				this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
 				System.out.println(SentenceProcessor.sents.get(chosenIdx));
-			}else
+			}else{
+				//Paraphrase a random sentence in Paragraph i
+				
+				Ranker rank = new Ranker();
+				rank.getRankedSentences(e.getParagraph(i));
+				
+				
+				
 				this.questionAnsPair.add(new Pair<Integer, String>(i, ""));
+			}
+				
 
 			
 			System.out.println("Paragraph: " + i);

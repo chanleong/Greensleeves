@@ -1,5 +1,7 @@
 package GUI;
 
+import itext.PDFFiller;
+
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 
@@ -130,7 +132,7 @@ public class GUI extends JPanel  {
 				ArrayList<QuestionType> qt = new ArrayList<QuestionType>();
 				
 				if(button.getText().equals("Generate")){
-//					loadAndGen();
+					loadAndGen();
 					
 				}
 				
@@ -271,6 +273,17 @@ public class GUI extends JPanel  {
     	Thread t = new Thread(eg);
     	
     	t.start();
+    	
+    	try {
+    		t.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	PDFFiller pdf = new PDFFiller(essays, "IELTS", eg.getQuestionList());
+//    	System.out.println(eg.getQuestionList());
+    	pdf.generate();
     	
 //    	try {
 //			t.join();
