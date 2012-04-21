@@ -3,7 +3,7 @@ import itext.PDFFiller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import GUI.gui;
+import GUI.GUI;
 
 import de.linguatools.disco.*;
 
@@ -26,7 +26,7 @@ public class Main {
 		//Loading library for the programme
 		LibraryInitializer li = new LibraryInitializer();
 		
-		gui.main(null);
+		GUI.main(null);
 		
 		//Load essay
 		Essay e1 = new Essay("Passage 1.txt");

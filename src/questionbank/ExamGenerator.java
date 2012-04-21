@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import questionbank.Question.QuestionType;
+import GUI.*;
+
 import essay.*;
 
 public class ExamGenerator implements Runnable{
@@ -27,21 +30,47 @@ public class ExamGenerator implements Runnable{
 	 * Generate question for the whole exam paper
 	 */
 	public synchronized void genQuestion(){
+		if(GUI.qts != null)
 		for(int i = 0; i < this.essays.length; i++){
 			if(i == 0){
-				genInfo(this.essays[i], i);
-				genParaHeading(essays[i], i);
+				ArrayList<QuestionType> qt = GUI.qts.get(0);
+				
+				
+//				genInfo(this.essays[i], i);
+//				genParaHeading(essays[i], i);
 //				this.questionQuota[i] -= essays[i].getNumOfParas();
 //				//For the remaining quota, generate MC
 //				genMCQ(essays[i], this.questionQuota[i]);
+				
+				
 			}else if(i == 1){
 //				genParaHeading(essays[i], i);
 //				this.questionQuota[i] -= essays[i].getNumOfParas();
-
+				
 
 			}else if(i == 2){
 				//genMCQ(essays[i], this.questionQuota[i]-10);
 			}
+		}
+	}
+	
+	private void chooseQuestionType(int i, ArrayList<QuestionType> qt){
+		if(qt.get(0) == QuestionType.InfoIdentification){
+			genInfo(this.essays[i], i);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}else if(qt.get(0) == QuestionType.ParagraphHeading){
+			genParaHeading(essays[i], i);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}else if(qt.get(0) == QuestionType.MCQ){
+			genMCQ(essays[i], this.questionQuota[i]/2);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}else if(qt.get(0) == QuestionType.TFNG){
+			genTFNG(essays[i], this.questionQuota[i]/2);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}
+		
+		if(qt.get(1) == QuestionType.ParagraphHeading){
+			
 		}
 	}
 	
@@ -64,11 +93,15 @@ public class ExamGenerator implements Runnable{
 		for(int i = 0; i < numOfParahraphs; i++) paragraphs[i] = i;
 		shuffle(paragraphs);
 		
+		MCQs mcqs = new MCQs();
+		
 		for(int i = 0; i < numOfMCQs; i++){
 			MCQ mcq = new MCQ(e.getParagraph(i));
 			mcq.questionGen();
-			questionList.add(mcq);
+			mcqs.addQuestionAnsPair(mcq.getQuestionAnsPair());
 		}
+		
+		questionList.add(mcqs);
 	}
 	
 	private synchronized void genTFNG(Essay e, int numOfTFNGs){
@@ -79,12 +112,16 @@ public class ExamGenerator implements Runnable{
 		for(int i = 0; i < numOfParahraphs; i++) paragraphs[i] = i;
 		shuffle(paragraphs);
 		
+		TFNGs tfngs = new TFNGs();
+		
 		for(int i = 0; i < numOfTFNGs; i++){
 			Sentence s = r.getRankedSentences(e.getParagraph(i)).get(0); //Get the highest ranked sentence
 			TFNG tfng = new TFNG(s);
 			tfng.questionGen();
-			questionList.add(tfng);
+			tfngs.addQuestionAnsPair(tfng.getQuestionAnsPair());
 		}
+		
+		questionList.add(tfngs);
 		
 	}
 	

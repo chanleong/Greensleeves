@@ -23,10 +23,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
  
-public class gui extends JPanel  {
-	ArrayList<ArrayList<QuestionType>> qts = new ArrayList<ArrayList<QuestionType>>();
+public class GUI extends JPanel  {
+	public static ArrayList<ArrayList<QuestionType>> qts = new ArrayList<ArrayList<QuestionType>>();
 	
-    public gui() {  	
+    public GUI() {  	
     	
         super(new GridLayout(1, 1));
          
@@ -72,7 +72,7 @@ public class gui extends JPanel  {
         JPanel panel = new FileChooser();
         return panel;
     }
-    protected JComponent makeTextPanel1(String text) {
+    protected JComponent makeTextPanel1(final String text) {
         final JPanel panel = new JPanel(false);
         JPanel passage = new JPanel();
         JPanel qtype = new JPanel();
@@ -107,9 +107,9 @@ public class gui extends JPanel  {
         passage.add(scrollPane1);
         qtype.setLayout(new GridLayout(6, 1));
         qtype.add(qtype_info);
+        qtype.add(qtype_heading);
         qtype.add(qtype_mcq);
         qtype.add(qtype_tf);
-        qtype.add(qtype_heading);
         qtype.add(qtype_fact);
         qtype.add(qtype_cloze);
         panel.setLayout (new BorderLayout());
@@ -138,6 +138,10 @@ public class gui extends JPanel  {
 					count ++;
 					qt.add(QuestionType.InfoIdentification);
 				}
+				if (qtype_heading.isSelected()){
+					count ++;
+					qt.add(QuestionType.ParagraphHeading);
+				}
 				if (qtype_mcq.isSelected()){
 					count ++;
 					qt.add(QuestionType.MCQ);
@@ -145,10 +149,6 @@ public class gui extends JPanel  {
 				if (qtype_tf.isSelected()){
 					count ++;
 					qt.add(QuestionType.TFNG);
-				}
-				if (qtype_heading.isSelected()){
-					count ++;
-					qt.add(QuestionType.ParagraphHeading);
 				}
 				if (qtype_fact.isSelected()){
 					count ++;
@@ -169,9 +169,16 @@ public class gui extends JPanel  {
 //					for(int i = 0; i < qt.size(); i++){
 //						System.out.println(qt.get(i));
 //					}
-					qts.add(qt);
+					if(text.equals("Passage 1")){
+						qts.add(0, qt);
+					}else if(text.equals("Passage 2")){
+						qts.add(1, qt);
+					}else if(text.equals("Passage 3")){
+						qts.add(2, qt);
+					}
+					
 					for(int i = 0; i < qts.size(); i++){
-						System.out.println(qts.get(i));
+						System.out.println("Index" + i + " "+ qts.get(i));
 					}
 					System.out.println("");
 					try {
@@ -212,7 +219,7 @@ public class gui extends JPanel  {
      
     /** Returns an ImageIcon, or null if the path was invalid. */
     protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = gui.class.getResource(path);
+        java.net.URL imgURL = GUI.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
@@ -234,7 +241,7 @@ public class gui extends JPanel  {
         JLabel label = new JLabel("Greensleeves");
          
         //Add content to the window.
-        frame.add(new gui(), BorderLayout.CENTER);
+        frame.add(new GUI(), BorderLayout.CENTER);
         frame.getContentPane().add(BorderLayout.NORTH , label);
          
         frame.setVisible(true);
