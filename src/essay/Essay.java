@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import questionbank.SentenceProcessor;
+
 
 public class Essay {
 	
 	private ArrayList<Paragraph> paragraphs;
 	private String header;
 	private String content;
+	private String concept;
 	
 	/**
 	 * 
@@ -89,6 +92,16 @@ public class Essay {
 	@Deprecated
 	public String getEssayStr(){
 		return this.content;
+	}
+	
+	public String getConcept(){
+		try {
+			this.concept = SentenceProcessor.extractConcept(this.content).get(0).getRight();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return this.concept;
 	}
 	
 	@Override
