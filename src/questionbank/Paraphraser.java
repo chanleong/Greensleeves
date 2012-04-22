@@ -25,7 +25,7 @@ public class Paraphraser {
 	RiWordnet ri;
 	
 	public Paraphraser(String workingSent) throws IOException{
-		disco = new DISCO(Parameters.disco.discoDir, false);
+		//disco = new DISCO(Parameters.disco.discoDir, false);
 		this.workingSent = workingSent;
 		ri = new RiWordnet();
 		
@@ -41,7 +41,7 @@ public class Paraphraser {
 	
 	public String paraphrase() throws IOException{
 		Random r = new Random();
-		System.err.println(disco.similarWords("dog").words[1]);
+		//System.err.println(disco.similarWords("dog").words[1]);
 		//String inter[] = workingSent.split(" ");
 		//String sent2 = "This is another sentence.";
 	    TokenizerFactory<CoreLabel> tokenizerFactory = 

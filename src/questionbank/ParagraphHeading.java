@@ -1,5 +1,6 @@
 package questionbank;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -85,11 +86,18 @@ public class ParagraphHeading extends Question{
 				//Paraphrase a random sentence in Paragraph i
 				
 				Ranker rank = new Ranker();
-				rank.getRankedSentences(e.getParagraph(i));
+				String sent = rank.getRankedSentences(e.getParagraph(i)).get(0).toString();
+				try {
+					Paraphraser _p = new Paraphraser(sent);
+					_p.setChanges(false, true, true, false, 0.7);
+					sent = _p.paraphrase();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				
-				
-				this.questionAnsPair.add(new Pair<Integer, String>(i, ""));
+				this.questionAnsPair.add(new Pair<Integer, String>(i, sent));
 			}
 				
 
