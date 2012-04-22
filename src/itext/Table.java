@@ -39,16 +39,28 @@ public class Table {
 		}
 		
 	}
+	public Table(int col,float w1, float w2,float percent){
+		table = new PdfPTable(col);
+		try{
+			float[] w = {w1, w2};
+			table.setWidths(w);
+			table.setWidthPercentage(percent);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public void add_cells(Paragraph para, char tag){
 		Font font_section = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
 		PdfPCell cell1 = new PdfPCell(new Phrase(tag+"",font_section));
 		PdfPCell cell2 = new PdfPCell(para);
 		cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
 		cell1.setBorder(Rectangle.NO_BORDER);
 		cell2.setBorder(Rectangle.NO_BORDER);
 		cell2.setPaddingBottom(15);
 		cell2.setPaddingRight(20);
-		cell2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
 		table.addCell(cell1);
 		table.addCell(cell2);
 	}
@@ -63,6 +75,27 @@ public class Table {
 		cell2.setPaddingRight(20);
 		table.addCell(cell1);
 		table.addCell(cell2);
+	}
+	public void add_cells_mc_inner(Paragraph para, char tag){
+		Font font_section = new Font(Font.FontFamily.UNDEFINED, 12, Font.BOLD);
+		PdfPCell cell1 = new PdfPCell(new Phrase(tag+"",font_section));
+		PdfPCell cell2 = new PdfPCell(para);
+		cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell1.setBorder(Rectangle.NO_BORDER);
+		cell2.setBorder(Rectangle.NO_BORDER);
+		cell2.setPaddingRight(20);
+		table.addCell(cell1);
+		table.addCell(cell2);
+	}
+	public void add_cells_mc_outer(PdfPTable inner_table){
+		PdfPCell cell1 = new PdfPCell(new Phrase(""));
+		PdfPCell cell2 = new PdfPCell(inner_table);
+		cell1.setBorder(Rectangle.NO_BORDER);
+		cell2.setBorder(Rectangle.NO_BORDER);
+		cell2.setPaddingBottom(15);
+		table.addCell(cell1);
+		table.addCell(cell2);
+		
 	}
 	
 	public PdfPTable getTable(){
