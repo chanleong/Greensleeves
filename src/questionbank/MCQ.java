@@ -18,7 +18,7 @@ import essay.Sentence;
  */
 public class MCQ extends Question{
 	
-	private int ans, paragraphNum;
+	private int _ans, paragraphNum;
 	private Pair<Integer, String[]> questionAnsPair;
 	private String[] instructions;
 	private Paragraph p;
@@ -61,7 +61,7 @@ public class MCQ extends Question{
 				}
 			}
 
-			//If object returned is smaller than 4
+			//If object returned is greater than 4
 			if(objCount >= 4){
 				NLGFactory nlgFactory = new NLGFactory(LibraryInitializer.LEXICON);
 				Realiser realiser = new Realiser(LibraryInitializer.LEXICON);
@@ -116,13 +116,13 @@ public class MCQ extends Question{
 				
 				this.instructions[0] = pickedSent;
 				super.setInstruction(this.instructions);
-				this.questionAnsPair = new Pair<Integer, String[]>(_pickedSent, choices);
+				this.questionAnsPair = new Pair<Integer, String[]>(this._ans, choices);
 
 
 
 			}else{
 
-				ArrayList<Pair<Double, String>> conceptPair = SentenceProcessor.extractConcept(p.getParagraph());
+				ArrayList<Pair<Double, String>> conceptPair = SentenceProcessor.extractConcept(p.toString());
 				//System.out.println("Which of the following correctly describe the paragraph " + "" + " ? (Choose the best one)");
 
 				String instruction = "Which of the following correctly describe the paragraph " + Question.getQuestionCharacter(paragraphNum) + " ? (Choose the best one)";
@@ -130,7 +130,7 @@ public class MCQ extends Question{
 				//The first one is of the highest relevancy, mark it as answer
 				choices[0] = conceptPair.get(0).getRight();
 				conceptPair.remove(0);
-				this.ans = 0; //Choice 0 is answer
+				this._ans = 0; //Choice 0 is answer
 
 				Collections.shuffle(conceptPair); //Randomly pick some concepts
 
@@ -145,7 +145,7 @@ public class MCQ extends Question{
 				
 				this.instructions[0] = instruction;
 				super.setInstruction(this.instructions);
-				this.questionAnsPair = new Pair<Integer, String[]>(this.ans, choices);
+				this.questionAnsPair = new Pair<Integer, String[]>(this._ans, choices);
 			}
 			//SentenceProcessor.extractConcept(p.getParagraph());
 		} catch (Exception e) {
@@ -158,7 +158,7 @@ public class MCQ extends Question{
 	private void shuffle(String[] choices){
 		Random r = new Random();
 		String tmp = "";
-		int tmpAns = this.ans;
+		int tmpAns = this._ans;
 		
 		for(int i = 0; i < choices.length; i++){
 			int rand1 = r.nextInt(choices.length);
@@ -172,8 +172,9 @@ public class MCQ extends Question{
 			}
 		}
 		
-		this.ans = tmpAns;
-		super.setAns(this.ans);
+		this._ans = tmpAns;
+		System.out.println("MCQ: This.ans: " + this._ans + " Choices Length: + " + choices.length);
+		super.setAns(this._ans);
 	}
 	
 	public Pair<Integer, String[]> getQuestionAnsPair(){
