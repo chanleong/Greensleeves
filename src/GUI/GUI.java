@@ -131,11 +131,6 @@ public class GUI extends JPanel  {
 				int count = 0;
 				ArrayList<QuestionType> qt = new ArrayList<QuestionType>();
 				
-				if(button.getText().equals("Generate")){
-					loadAndGen();
-					
-				}
-				
 				if (qtype_info.isSelected()){
 					count ++;
 					qt.add(QuestionType.InfoIdentification);
@@ -177,6 +172,10 @@ public class GUI extends JPanel  {
 						qts.add(1, qt);
 					}else if(text.equals("Passage 3")){
 						qts.add(2, qt);
+					}
+					
+					if(button.getText().equals("Generate")){
+						loadAndGen();
 					}
 					
 					for(int i = 0; i < qts.size(); i++){
