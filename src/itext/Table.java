@@ -48,6 +48,7 @@ public class Table {
 		cell2.setBorder(Rectangle.NO_BORDER);
 		cell2.setPaddingBottom(15);
 		cell2.setPaddingRight(20);
+		cell2.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
 		table.addCell(cell1);
 		table.addCell(cell2);
 	}

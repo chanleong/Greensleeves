@@ -9,6 +9,8 @@ import essay.Essay;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import questionbank.*;
@@ -74,7 +76,7 @@ public class PDFFiller {
 		return this.essays[i];
 	}
 	
-	public void generate(){
+	public void generate(){		
 		//Passage 1
 		fillHeader(0, 1, 13);
 		Font headingFont = new Font(Font.FontFamily.TIMES_ROMAN, 22, Font.BOLD|Font.UNDERLINE);
@@ -150,31 +152,7 @@ public class PDFFiller {
 		//fillQuestionHeading(0, QuestionType.ParagraphHeading, 1, 13);
 		//fillQuestionHeading(0, QuestionType.TFNG, 1, 13);
 		
-		int min = 0;
-		int quota = 13;
-		for(int i = 0; i < 2; i++){
-			Question q = this.questionList.get(i);
-			if(q instanceof InfoIdentification){
-				quota -= numOfParagraphs;
-				min = Math.min(numOfParagraphs, quota);
-				InfoIdentification ii = (InfoIdentification)q;
-				String[] _info = new String[numOfParagraphs];
-				for(int j = 0; j < numOfParagraphs; j++){
-					_info[j] = ii.getQuestionAnsPair().get(j).getRight();
-				}
-				fillQuestionHeading(0, QuestionType.InfoIdentification, 1, numOfParagraphs);
-				fillInfoIdentification(numOfParagraphs, _info, 1);
-			}else if(q instanceof ParagraphHeading){
-				ParagraphHeading ph = (ParagraphHeading)q;
-				String[] _info = new String[numOfParagraphs];
-				for(int j = 0; j < numOfParagraphs; j++){
-					_info[j] = ph.getQuestionAnsPair().get(j).getRight();
-				}
-				fillQuestionHeading(0, QuestionType.ParagraphHeading, numOfParagraphs + 1, 13);
-				fillHeadingMatching(min, _info, numOfParagraphs + 1);
-			}
-		}
-		
+		fillQuestions(13, 0, numOfParagraphs);
 		
 		
 		
@@ -197,6 +175,51 @@ public class PDFFiller {
 		fillEssay(this.essays[2], 0, headingFont, paraFont, true);
 		this.doc.newPage();
 		this.doc.close();
+	}
+	
+	private void fillImg(ImageHandler ih, String concept){
+		try {
+			ih.setConcept(concept);
+			Image img = Image.getInstance(ih.getImgByteArray());
+			img.setAlignment(Element.ALIGN_CENTER);
+			this.doc.add(img);
+		}catch (Exception e){
+			
+		}
+	}
+	
+	//Filling all types of quesitons
+	//1. Number of questions for a section; 2. Starting index of the QuestionList array 3.Number of paragraphs
+	private void fillQuestions(int quota, int startIdx, int numOfParagraphs){
+		int min = 0;
+		for(int i = startIdx; i < startIdx + 2; i++){
+			Question q = this.questionList.get(i);
+			if(q instanceof InfoIdentification){
+				quota -= numOfParagraphs;
+				min = Math.min(numOfParagraphs, quota);
+				InfoIdentification ii = (InfoIdentification)q;
+				String[] _info = new String[numOfParagraphs];
+				for(int j = 0; j < numOfParagraphs; j++){
+					_info[j] = ii.getQuestionAnsPair().get(j).getRight();
+				}
+				fillQuestionHeading(0, QuestionType.InfoIdentification, 1, numOfParagraphs);
+				fillInfoIdentification(numOfParagraphs, _info, 1);
+			}else if(q instanceof ParagraphHeading){
+				ParagraphHeading ph = (ParagraphHeading)q;
+				String[] _info = new String[numOfParagraphs];
+				for(int j = 0; j < numOfParagraphs; j++){
+					_info[j] = ph.getQuestionAnsPair().get(j).getRight();
+				}
+				fillQuestionHeading(0, QuestionType.ParagraphHeading, numOfParagraphs + 1, 13);
+				fillHeadingMatching(min, _info, numOfParagraphs + 1);
+			}else if(q instanceof MCQs){
+				
+			}else if(q instanceof TFNGs){
+				
+			}else if(q instanceof SevenTypes){
+				
+			}
+		}
 	}
 	
 	//Filling the header of the passage, 1. Essay number 2.Starting question 3.Ending question
@@ -231,6 +254,7 @@ public class PDFFiller {
 	private void fillEssay(Essay e, int essayNum, 
 			Font titleFont, Font paraFont, boolean showSection)
 	{		
+		ImageHandler ih = new ImageHandler("");
 		String heading = e.getHeader().toUpperCase();
 		int numOfParagraphs = e.getNumOfParas();
 		
@@ -242,7 +266,10 @@ public class PDFFiller {
 		 
 		 try {
 			 doc.add(_heading);
-		 
+			 String concept = e.getConcept();
+			 fillImg(ih, concept);
+			 
+			 
 		
 		 Table passage_table = new Table();
 		for(int i = 0; i < numOfParagraphs; i++){
@@ -417,6 +444,7 @@ public class PDFFiller {
 		cell.setPadding(20);
 		cell.addElement(listofheadings);
 		RomanList list = new RomanList();
+		list.setLowercase(true);
 		for(int i = 0; i < headings.length; i++){
 			list.add(new ListItem(headings[i]));
 		}
