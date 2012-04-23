@@ -70,9 +70,16 @@ public class TFNG extends Question{
 		System.out.println(test);
 
 		genSents(test);
-
-		pickedSent = r.nextInt(SentenceProcessor.sents.size());
-		String sent = SentenceProcessor.sents.get(pickedSent).toString();
+		
+		String sent = "";
+		if(SentenceProcessor.sents.size() == 0){
+			sent = this.s.toString();
+			this.ans = true;
+		}else{
+			pickedSent = r.nextInt(SentenceProcessor.sents.size());
+			sent = SentenceProcessor.sents.get(pickedSent).toString();
+		}
+		
 
 		this.ans = this.posRestructure && this.posSub;
 		int _ans = (this.ans)? 1 : 0;
