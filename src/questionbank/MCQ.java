@@ -89,7 +89,7 @@ public class MCQ extends Question{
 					sent = nlgFactory.createClause(subj, action);
 
 					String out = realiser.realiseSentence(sent);
-					sents.add(out.substring(0, out.length()-1) + ":");
+					sents.add(out.substring(0, out.length()-1));
 					//System.out.println(out.substring(0, out.length()-1) + ":");
 					objs.add(obj);
 					//System.out.println("Object :" + obj);
