@@ -101,7 +101,7 @@ public class InfoIdentification extends Question{
 
 			int numOfSent = p.getNumOfSents();
 			Random r = new Random();
-			int chosen = r.nextInt(numOfSent - 1);
+			int chosen = r.nextInt(numOfSent);
 			Sentence s = p.getSentence(chosen);
 
 			try {

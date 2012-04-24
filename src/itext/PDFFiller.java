@@ -19,8 +19,10 @@ import questionbank.Question.QuestionType;
 public class PDFFiller {
 	private Essay[] essays;
 	private Document doc;
+	private Document doc_ans;
 	private String docName;
 	private ArrayList<Question> questionList;
+	private int questinCount = 1;
 	
 	//Common font
 	private Font normalFont = new Font(Font.FontFamily.HELVETICA, 12);
@@ -38,12 +40,15 @@ public class PDFFiller {
 		this.docName = docName;
 		this.doc = new Document(PageSize.A4, 60, 60, 60, 60);
 		this.questionList = questionList;
-	
+		this.doc_ans = new Document(PageSize.A4, 60, 60, 60, 60);
 		
 		try {
 			PdfWriter.getInstance(this.doc,
 					new FileOutputStream(docName + ".pdf"));
 			doc.open();
+			PdfWriter.getInstance(this.doc_ans,
+					new FileOutputStream(docName + "_Answer.pdf"));
+			doc_ans.open();
 
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -56,13 +61,16 @@ public class PDFFiller {
 		this.essays = essays; 
 		this.docName = docName;
 		this.doc = new Document(PageSize.A4, 60, 60, 60, 60);
-		
+		this.doc_ans = new Document(PageSize.A4, 60, 60, 60, 60);
 	
 		
 		try {
 			PdfWriter.getInstance(this.doc,
 					new FileOutputStream(docName + ".pdf"));
 			doc.open();
+			PdfWriter.getInstance(this.doc_ans,
+					new FileOutputStream(docName + "_Answer.pdf"));
+			doc_ans.open();
 
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -83,6 +91,12 @@ public class PDFFiller {
 	    Font paraFont = new Font(Font.FontFamily.TIMES_ROMAN, 14);
 		fillEssay(this.essays[0], 0, headingFont, paraFont, true);
 		this.doc.newPage();
+		try {
+			this.doc_ans.add(new Paragraph("Answer:"));
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		int size = this.questionList.size();
 		//int size = this.questionList.size();
@@ -166,15 +180,21 @@ public class PDFFiller {
 		
 		
 		
-		
+		numOfParagraphs = this.essays[1].getNumOfParas();
 		fillHeader(1, 14, 26);
-		fillEssay(this.essays[1], 0, headingFont, paraFont, true);
+		fillEssay(this.essays[1], 1, headingFont, paraFont, true);
 		this.doc.newPage();
+		fillQuestions(13, 2, numOfParagraphs);
 		
+		
+		numOfParagraphs = this.essays[2].getNumOfParas();
 		fillHeader(2, 27, 40);
-		fillEssay(this.essays[2], 0, headingFont, paraFont, true);
+		fillEssay(this.essays[2], 2, headingFont, paraFont, true);
 		this.doc.newPage();
+		fillQuestions(14, 4, numOfParagraphs);
+		
 		this.doc.close();
+		this.doc_ans.close();
 	}
 	
 	private void fillImg(ImageHandler ih, String concept){
@@ -192,29 +212,46 @@ public class PDFFiller {
 	//1. Number of questions for a section; 2. Starting index of the QuestionList array 3.Number of paragraphs
 	private void fillQuestions(int quota, int startIdx, int numOfParagraphs){
 		int min = 0;
+		int _quota = quota;
+
 		for(int i = startIdx; i < startIdx + 2; i++){
 			Question q = this.questionList.get(i);
 			if(q instanceof InfoIdentification){
-				quota -= numOfParagraphs;
-				min = Math.min(numOfParagraphs, quota);
+				_quota -= numOfParagraphs;
+				min = Math.min(numOfParagraphs, _quota);
+				System.out.println("Min: " + min);
 				InfoIdentification ii = (InfoIdentification)q;
-				String[] _info = new String[numOfParagraphs];
-				for(int j = 0; j < numOfParagraphs; j++){
-					_info[j] = ii.getQuestionAnsPair().get(j).getRight();
-				}
-				fillQuestionHeading(0, QuestionType.InfoIdentification, 1, numOfParagraphs);
-				fillInfoIdentification(numOfParagraphs, _info, 1);
+
+				fillQuestionHeading(i/2, QuestionType.InfoIdentification, this.questinCount, numOfParagraphs);
+				fillInfoIdentification(numOfParagraphs, ii.getQuestionAnsPair(), this.questinCount);
 			}else if(q instanceof ParagraphHeading){
 				ParagraphHeading ph = (ParagraphHeading)q;
-				String[] _info = new String[numOfParagraphs];
-				for(int j = 0; j < numOfParagraphs; j++){
-					_info[j] = ph.getQuestionAnsPair().get(j).getRight();
-				}
-				fillQuestionHeading(0, QuestionType.ParagraphHeading, numOfParagraphs + 1, 13);
-				fillHeadingMatching(min, _info, numOfParagraphs + 1);
+				int sum = 0;
+				int qNum = 0;
+				if(min == 0){
+					sum = this.questinCount + numOfParagraphs - 1;
+					qNum = numOfParagraphs;
+				}else{
+					sum = this.questinCount + min - 1;
+					qNum = min;
+				}			
+				
+				//System.out.println("QuestionRange : " + tmp);
+
+				fillQuestionHeading(i/2, QuestionType.ParagraphHeading, this.questinCount, sum);
+				fillHeadingMatching(qNum, ph.getQuestionAnsPair(), this.questinCount);
 			}else if(q instanceof MCQs){
+				MCQs mcqs = (MCQs)q;
+				
+				fillQuestionHeading(i/2, QuestionType.MCQ, this.questinCount, this.questinCount + mcqs.getQuestionAnsPair().size() - 1);
+				int numOfMCs = mcqs.getQuestionAnsPair().size();
+				fillMCQ(numOfMCs, mcqs.getQuestionAnsPair(), mcqs.getInstructions(), this.questinCount);
 				
 			}else if(q instanceof TFNGs){
+				TFNGs tfngs = (TFNGs)q;
+				
+				fillQuestionHeading(i/2, QuestionType.TFNG, this.questinCount, this.questinCount + tfngs.getQuestionAnsPair().size() - 1);
+				fillTFNG(tfngs.getQuestionAnsPair().size(), tfngs.getQuestionAnsPair(), this.questinCount);
 				
 			}else if(q instanceof SevenTypes){
 				
@@ -366,6 +403,20 @@ public class PDFFiller {
 				for(int i = 0; i < instructions.length; i++) this.doc.add(instructions[i]);
 				
 			}else if(qType == QuestionType.MCQ){
+				Paragraph instruction = new Paragraph();
+				Paragraph instruction2 = new Paragraph();
+				
+				Phrase first_line = new Phrase();
+				first_line.add(new Phrase("Choose the appropriate letters ",italicFont));
+				first_line.add(new Phrase("A, B, C ",boldItalic));
+				first_line.add(new Phrase("or ",italicFont));
+				first_line.add(new Phrase("D.", boldItalic));
+				instruction.add(first_line);
+				instruction.setSpacingAfter(10);
+				instruction2.add(new Phrase("Write your answers in boxes "+ startQ+"-"+endQ+" on your answer sheet.",italicFont));
+				instruction2.setSpacingAfter(10);
+				this.doc.add(instruction);
+				this.doc.add(instruction2);
 				
 			}else if(qType == QuestionType.TFNG){
 				
@@ -408,24 +459,27 @@ public class PDFFiller {
 		}
 	}
 	
-	private void fillTFNG(){
-		
-	}
-	
-	private void MCQ(){
-		
-	}
-	
-	private void fillInfoIdentification(int qNum, String[] info, int startQ){
+	private void fillTFNG(int qNum, ArrayList<Pair<Integer, String>> pair_list, int startQ){
+		String tfng;
+		int ans;
+		String[] str_ans = {"TRUE", "FALSE", "NOT GIVEN"};
 		Table question_table = new Table(2,105f);
+		Table answer_table = new Table(2,105f);
+		
 		for(int i = 0 ; i < qNum; i++){
+			this.questinCount++;
+			tfng = pair_list.get(i).getRight();
 			Phrase p = new Phrase();
-			p.add(new Phrase(info[i]));
+			p.add(new Phrase(tfng));
 			question_table.add_cells2(p, startQ+i);
+			ans = pair_list.get(i).getLeft();
+			answer_table.add_cells2(new Phrase(str_ans[ans]), startQ+i);
 		}
 		try {
+			question_table.getTable().setSpacingBefore(20);
 			this.doc.add(question_table.getTable());
 			this.doc.newPage();
+			this.doc_ans.add(answer_table.getTable());
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -434,7 +488,69 @@ public class PDFFiller {
 		
 	}
 	
-	private void fillHeadingMatching(int qNum, String[] headings, int startQ){
+	private void fillMCQ(int qNum, ArrayList<Pair<Integer, String[]>> pair_list, String[] instruct, int startQ){
+		String[] mcs;
+		int ans;
+		String[] str_ans = {"A","B","C","D"};
+		Table question_table = new Table(2,105f);
+		Table answer_table = new Table(2,105f);
+		for(int i = 0; i < qNum ;i++){
+			this.questinCount++;
+			Phrase p = new Phrase(instruct[i]);
+			question_table.add_cells2(p, startQ+i);
+			Table mc_table = new Table(2, 2, 10,90f);
+			mcs = pair_list.get(i).getRight();
+			for(int j = 0; j < 4 ; j++){
+				Paragraph mc_choice = new Paragraph(mcs[j]);
+				mc_table.add_cells_mc_inner(mc_choice, (char)(65+j));
+			}
+			question_table.add_cells_mc_outer(mc_table.getTable());
+			ans = pair_list.get(i).getLeft();
+			answer_table.add_cells2(new Phrase(str_ans[ans]), startQ+i);
+		}
+		try {
+			question_table.getTable().setSpacingBefore(10);
+			this.doc.add(question_table.getTable());
+			this.doc.newPage();
+			this.doc_ans.add(answer_table.getTable());
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void fillInfoIdentification(int qNum, ArrayList<Pair<Integer, String>> pair_list, int startQ){
+		String info;
+		int ans;
+		Table question_table = new Table(2,105f);
+		Table answer_table = new Table(2,105f);
+		for(int i = 0 ; i < qNum; i++){
+			this.questinCount++;
+			info = pair_list.get(i).getRight();
+			Phrase p = new Phrase();
+			p.add(new Phrase(info));
+			question_table.add_cells2(p, startQ+i);
+			ans = pair_list.get(i).getLeft();
+			answer_table.add_cells2(new Phrase((char)(65+ans)+""), startQ+i);
+		}
+		try {
+			question_table.getTable().setSpacingBefore(10);
+			this.doc.add(question_table.getTable());
+			this.doc.newPage();
+			this.doc_ans.add(answer_table.getTable());
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	private void fillHeadingMatching(int qNum, ArrayList<Pair<Integer, String>> pair_list, int startQ){
+		String headings;
+		int[] ans = new int[qNum];
+		String[] ans_in_seq = new String[qNum];
 		Paragraph listofheadings = new Paragraph("List of Headings",boldFont);
 		listofheadings.setSpacingAfter(15);
 		listofheadings.setAlignment(Element.ALIGN_CENTER);
@@ -445,8 +561,16 @@ public class PDFFiller {
 		cell.addElement(listofheadings);
 		RomanList list = new RomanList();
 		list.setLowercase(true);
-		for(int i = 0; i < headings.length; i++){
-			list.add(new ListItem(headings[i]));
+		for(int i = 0; i < pair_list.size(); i++){
+			headings = pair_list.get(i).getRight();
+			list.add(new ListItem(headings));
+			if(i < qNum){
+				ans[i] = pair_list.get(i).getLeft();
+				this.questinCount++;
+			}
+		}
+		for(int i = 0; i < pair_list.size(); i++){
+			if(i < qNum) ans_in_seq[ans[i]] = RomanConversion.binaryToRoman(i+1);
 		}
 		cell.addElement(list);
 		table.addCell(cell);
@@ -456,14 +580,17 @@ public class PDFFiller {
 			this.doc.add(table);
 			
 			Table question_table = new Table(2,105f);
+			Table answer_table = new Table(2,105f);
 			for(int j = 0 ; j < qNum; j++){
 				Phrase p = new Phrase();
 				p.add("Section ");
 				p.add(new Phrase((char)(j+65)+"",boldFont));
 				question_table.add_cells2(p, startQ+j);
+				answer_table.add_cells2(new Phrase(ans_in_seq[j]), startQ+j);
 			}
 			this.doc.add(question_table.getTable());
 			this.doc.newPage();
+			this.doc_ans.add(answer_table.getTable());
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}

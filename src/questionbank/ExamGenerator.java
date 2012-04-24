@@ -46,12 +46,12 @@ public class ExamGenerator implements Runnable{
 //				genParaHeading(essays[i], i);
 //				this.questionQuota[i] -= essays[i].getNumOfParas();
 				ArrayList<QuestionType> qt = GUI.qts.get(i);
-//				chooseQuestionType(i, qt);
+				chooseQuestionType(i, qt);
 
 			}else if(i == 2){
 				//genMCQ(essays[i], this.questionQuota[i]-10);
-//				ArrayList<QuestionType> qt = GUI.qts.get(i);
-//				chooseQuestionType(i, qt);
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
+				chooseQuestionType(i, qt);
 			}
 		}
 	}
@@ -120,9 +120,10 @@ public class ExamGenerator implements Runnable{
 		MCQs mcqs = new MCQs();
 		
 		for(int i = 0; i < numOfMCQs; i++){
-			MCQ mcq = new MCQ(e.getParagraph(i));
+			MCQ mcq = new MCQ(e.getParagraph(paragraphs[i]), paragraphs[i]);
 			mcq.questionGen();
 			mcqs.addQuestionAnsPair(mcq.getQuestionAnsPair());
+			mcqs.addInstruction(mcq.getInstructions()[0]);
 		}
 		
 		questionList.add(mcqs);
@@ -173,10 +174,6 @@ public class ExamGenerator implements Runnable{
 			arr[chosen] = arr[i];
 			arr[i] = tmp;
 		}
-	}
-	
-	private int min(int i, int j){
-		return (i >= j) ? j : i;
 	}
 	
 	@Override

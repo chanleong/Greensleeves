@@ -174,10 +174,6 @@ public class GUI extends JPanel  {
 						qts.add(2, qt);
 					}
 					
-					if(button.getText().equals("Generate")){
-						loadAndGen();
-					}
-					
 					for(int i = 0; i < qts.size(); i++){
 						System.out.println("Index" + i + " "+ qts.get(i));
 					}
@@ -188,6 +184,11 @@ public class GUI extends JPanel  {
 						outFile1.close();
 					} catch (IOException e) {
 						e.printStackTrace();
+					}
+					if(button.getText().equals("Generate")){
+						loadAndGen();
+						button.setEnabled(false);
+						
 					}
 				}
 				else 
@@ -268,21 +269,31 @@ public class GUI extends JPanel  {
     	essays[1] = new Essay(Parameters.PASSAGE2);
     	essays[2] = new Essay(Parameters.PASSAGE3);
     	
-    	ExamGenerator eg = new ExamGenerator(essays);
-    	Thread t = new Thread(eg);
-    	
+    	GenThreadWrapper gw = new GenThreadWrapper(essays);
+    	Thread t = new Thread(gw);
     	t.start();
     	
-    	try {
-    		t.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	JOptionPane.showMessageDialog(null,
+			    "Genearating exam paper, please wait...",
+			    "Inane warning",
+			    JOptionPane.WARNING_MESSAGE);
     	
-    	PDFFiller pdf = new PDFFiller(essays, "IELTS", eg.getQuestionList());
-//    	System.out.println(eg.getQuestionList());
-    	pdf.generate();
+//    	ExamGenerator eg = new ExamGenerator(essays);
+//    	Thread t = new Thread(eg);
+//    	
+//    	t.start();
+//    	
+//    	try {
+//    		t.join();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//    	
+//    	PDFFiller pdf = new PDFFiller(essays, "IELTS", eg.getQuestionList());
+////    	System.out.println(eg.getQuestionList());
+//    	pdf.generate();
+    	
     	
 //    	try {
 //			t.join();
