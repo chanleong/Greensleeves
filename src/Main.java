@@ -33,6 +33,10 @@ public class Main {
 		Essay[] es = new Essay[1];
 		es[0] = e1;
 		
+		Matching m = new Matching(e1, 5);
+		m.questionGen();
+		System.out.println(m.getQuestionAnsPair());
+		
 //		//Generate exam questions
 //		ExamGenerator eg = new ExamGenerator(es);
 //		
