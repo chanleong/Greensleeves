@@ -77,6 +77,13 @@ public class ExamGenerator implements Runnable{
 			
 			genTFNG(essays[i], min);
 			this.questionQuota[i] -= min;
+		}else if(qt.get(0) == QuestionType.Matching){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genMatching(essays[i], min);
+			
 		}
 		
 		if(qt.get(1) == QuestionType.ParagraphHeading){
@@ -95,6 +102,12 @@ public class ExamGenerator implements Runnable{
 			genTFNG(essays[i], min);
 		}else if(qt.get(1) == QuestionType.SevenTypes){
 			
+		}else if(qt.get(1) == QuestionType.Matching){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genMatching(essays[i], min);
 		}
 	}
 	
@@ -154,6 +167,12 @@ public class ExamGenerator implements Runnable{
 		SevenTypes seven = new SevenTypes(e, numOf7Types);
 		seven.questionGen();
 		questionList.add(seven);
+	}
+	
+	private synchronized void genMatching(Essay e, int numOfQs){
+		Matching matching = new Matching(e, numOfQs);
+		matching.questionGen();
+		questionList.add(matching);
 	}
 	
 	/**
