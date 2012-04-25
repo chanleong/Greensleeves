@@ -253,6 +253,8 @@ public class PDFFiller {
 				fillQuestionHeading(i/2, QuestionType.TFNG, this.questinCount, this.questinCount + tfngs.getQuestionAnsPair().size() - 1);
 				fillTFNG(tfngs.getQuestionAnsPair().size(), tfngs.getQuestionAnsPair(), this.questinCount);
 				
+			}else if(q instanceof Matching){
+				Matching matching = (Matching)q;
 			}else if(q instanceof SevenTypes){
 				
 			}
@@ -396,7 +398,10 @@ public class PDFFiller {
 				instructions[1].add(new Phrase(" from the list of headings below.", italicFont));
 				instructions[1].setSpacingAfter(10);
 				
-				instructions[2].add(new Phrase("Write the correct number " + startQ + "-" + endQ + " in boxes "
+				
+				
+				instructions[2].add(new Phrase("Write the correct number " + RomanConversion.binaryToRoman(1).toLowerCase() 
+						+ "-" + RomanConversion.binaryToRoman(endQ - startQ + 1).toLowerCase() + " in boxes "
 						+ startQ + "-" + endQ +" on your answer sheet.", italicFont));
 				instructions[2].setSpacingAfter(10);
 				
@@ -452,6 +457,23 @@ public class PDFFiller {
 				this.doc.add(trueInstruct);
 				this.doc.add(falseInstruct);
 				this.doc.add(ngInstruct);
+			}else if(qType == QuestionType.Matching){
+				Paragraph[] instructions = new Paragraph[2];
+				for(int i = 0; i < instructions.length; i++) instructions[i] = new Paragraph();
+				
+				instructions[0].add(new Phrase("Complete each sentence with the correct ending, ", italicFont));
+				instructions[0].add(new Phrase(Question.getQuestionCharacter(0) + "-" + Question.getQuestionCharacter(endQ - startQ + 1), boldItalic));
+				instructions[0].add(new Phrase(", below.", italicFont));
+				instructions[0].setSpacingAfter(10);
+				
+				instructions[1].add(new Phrase("Write the correct letter, ", italicFont));
+				instructions[1].add(new Phrase(Question.getQuestionCharacter(0) + "-" + Question.getQuestionCharacter(endQ - startQ + 1) + ",", boldItalic));
+				instructions[1].add(new Phrase("in boxes " + startQ + "-" + endQ + "on your answer sheet.", italicFont));
+				instructions[1].setSpacingAfter(10);
+				
+				for(int i = 0; i < instructions.length; i++) this.doc.add(instructions[i]);
+			}else if(qType == QuestionType.SevenTypes){
+				
 			}
 			
 		}catch(Exception e){
