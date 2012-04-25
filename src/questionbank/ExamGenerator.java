@@ -131,6 +131,7 @@ public class ExamGenerator implements Runnable{
 			for(int j = 0; j<min; j++){
 				getSummaryCloze(essays[j], (new Random()).nextInt(essays[j].getParagraphs().size()));
 			}
+		}
 	}
 	
 	private synchronized void genInfo(Essay e, int essayNum){
