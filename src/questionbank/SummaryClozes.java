@@ -6,6 +6,7 @@ import essay.*;
 
 public class SummaryClozes extends Question {
 
+	
 	SummaryCloze chicken;
 	Essay essay;
 	Integer qnNum;
