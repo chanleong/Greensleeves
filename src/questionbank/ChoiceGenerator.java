@@ -1,3 +1,5 @@
+package questionbank;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ public class ChoiceGenerator {
 		
 		// discoDir is the path to get the DISCO wordbase
 		//String discoDir = "Z:\\AdvancedBase";
-		String discoDir = "Z:\\Wordbase";
+		//String discoDir = "Z:\\Wordbase";
+		String discoDir = parameters.disco.discoDir;
 		DISCO disco = new DISCO(discoDir, false);
 		
 		String[] ansSet;

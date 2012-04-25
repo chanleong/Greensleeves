@@ -196,7 +196,7 @@ public class TFNG extends Question{
 	 * 
 	 * @return The question and answer pair. Left is question, right is answer
 	 */
-	public Pair<Integer, String> getAnsPair(){
+	public Pair<Integer, String> getQuestionAnsPair(){
 		return this.questionAnsPair;
 	}
 

@@ -84,6 +84,8 @@ public class ExamGenerator implements Runnable{
 			
 			genMatching(essays[i], min);
 			
+		}else if(qt.get(0) == QuestionType.SevenTypes){
+			
 		}
 		
 		if(qt.get(1) == QuestionType.ParagraphHeading){
@@ -101,7 +103,11 @@ public class ExamGenerator implements Runnable{
 			
 			genTFNG(essays[i], min);
 		}else if(qt.get(1) == QuestionType.SevenTypes){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
 			
+			genSevenTypes(essays[i], min);
 		}else if(qt.get(1) == QuestionType.Matching){
 			int numOfParas = essays[i].getNumOfParas();
 			int quota = this.questionQuota[i];

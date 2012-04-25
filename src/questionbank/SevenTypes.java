@@ -135,7 +135,7 @@ public class SevenTypes extends Question {
 		//choices.addAll(ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum+2));
 		
 		try {
-			for (String i : (ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum))){
+			for (String i : (ChoiceGenerator.ChoiceGenerator((String[])selectedFacts.toArray(new String[selectedFacts.size()]), qnNum, 2))){
 				choices.add(i);
 			}
 		} catch (IOException e) {
@@ -202,32 +202,33 @@ public class SevenTypes extends Question {
 		String replacement;
 		switch (targetType){
 		case DATE:
-			replacement = "the date";
+			replacement = "this date";
 			break;
 		case LOCATION:
-			replacement = "the location";
+			replacement = "this location";
 			break;
 		case MONEY:
-			replacement = "how much";
+			replacement = "this amount";
 			break;
 		case ORGANIZATION:
-			replacement = "who";
+			replacement = "this organization";
 			break;
 		case PERCENT:
-			replacement = "how many";
+			replacement = "this percentage";
 			break;
 		case PERSON:
-			replacement = "who";
+			replacement = "this person";
 			break;
 		case TIME:
-			replacement = "when";
+			replacement = "this time";
 			break;
 		default:
 			replacement = fact;
 			break;
 		}
-		result.replaceAll(fact, replacement);
-	
+		//result.replaceAll(fact, replacement);
+		String inter[] = result.split(fact);
+		result = inter[0] + " " + replacement + " " + inter[1];
 		try {
 			Paraphraser p = new Paraphraser(result);
 			p.setChanges(false, true, true, false, 0.7);
