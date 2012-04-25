@@ -129,10 +129,16 @@ public class ExamGenerator implements Runnable{
 			int numOfParas = essays[i].getNumOfParas();
 			int quota = this.questionQuota[i];
 			int min = Math.min(numOfParas, quota);
+<<<<<<< HEAD
 			//for(int j = 0; j<min; j++){
 			//	getSummaryCloze(essays[j], (new Random()).nextInt(essays[j].getParagraphs().size()));
 			//}
 			getSummaryCloze(essays[i], min);
+=======
+			for(int j = 0; j<min; j++){
+				getSummaryCloze(essays[j], (new Random()).nextInt(essays[j].getParagraphs().size()));
+			}
+>>>>>>> ctc-Greensleeves/everything1
 		}
 	}
 	
