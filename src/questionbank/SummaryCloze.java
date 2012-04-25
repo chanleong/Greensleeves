@@ -43,7 +43,8 @@ public class SummaryCloze extends Question {
 			Paraphraser paraphraser = new Paraphraser(targetSent.toString());
 			paraphraser.setChanges(false, true, true, false, 0.4);
 			String paraphrased = paraphraser.paraphrase();
-			Tagparsing tp = new Tagparsing(paraphrased);
+			
+			/*Tagparsing tp = new Tagparsing(paraphrased);
 			Integer nounsPos[] = tp.getNouns();
 			Integer targetBlankPos = r.nextInt(nounsPos.length);
 		    TokenizerFactory<CoreLabel> tokenizerFactory = 
@@ -62,6 +63,21 @@ public class SummaryCloze extends Question {
 					result += inter[i] + " ";
 				else
 					result += inter[i];
+			*/
+			
+			ArrayList <String> facts = FactEvaluator.getAllFact(paraphrased);
+			String targetFact = facts.get(r.nextInt(facts.size()));
+			String answer = targetFact;
+			String result = paraphrased;
+			
+			//result.replace(targetFact, "_______________");
+			//result.re
+			String inter[] = result.split(targetFact);
+			result = inter[0] + " ______________ " + inter[1];
+			
+		
+			
+			
 			questionAnsPair = new Pair<String, String>(result, answer);
 			System.out.println(result);
 			System.out.println(answer);

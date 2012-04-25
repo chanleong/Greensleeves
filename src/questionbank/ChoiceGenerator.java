@@ -1,22 +1,22 @@
-package questionbank;
+
 import java.io.IOException;
+import java.util.ArrayList;
+
 import de.linguatools.disco.DISCO;
 import de.linguatools.disco.ReturnDataBN;
 
 public class ChoiceGenerator {
 	
 	//Need a set of correct answer (in array format) and the number of these answers as input
-	public static String[]  ChoiceGenerator(String[] options, int n ) throws IOException{
+	public static String[]  ChoiceGenerator(String[] options, int n, int ex ) throws IOException{
 		
 		// discoDir is the path to get the DISCO wordbase
 		//String discoDir = "Z:\\AdvancedBase";
-		//String discoDir = "Z:\\Wordbase";
-		String discoDir = parameters.disco.discoDir;
-		
+		String discoDir = "Z:\\Wordbase";
 		DISCO disco = new DISCO(discoDir, false);
 		
 		String[] ansSet;
-		ansSet = new String[n*2];
+		ansSet = new String[n + ex];
 		
 		String[] wrongAns;
 		wrongAns = new String[n];
@@ -25,8 +25,8 @@ public class ChoiceGenerator {
 		wrongAnsShort = new String[n];
 		
 		String[] wrongAnsLong;
-		wrongAnsLong = new String[n];
-		for( int i = 0; i < n; i++){
+		wrongAnsLong = new String[ex];
+		for( int i = 0; i < ex; i++){
 			wrongAnsLong[i] = "";
 		}
 		
@@ -51,7 +51,7 @@ public class ChoiceGenerator {
 				
 				wrongAnsLongCounter ++;
 				
-				
+				//keep all wrongAnsLong in wrongAnsLong[wrongAnsLongCounter]
 				
 				
 				
@@ -68,7 +68,7 @@ public class ChoiceGenerator {
 		        int outputNo = 1; // the number for the similar word chose to use
 		        
 		        // To eliminate repeat answers with the true answer and the existing answer set
-		        for(int k = 0; k < n; k++){
+		        for(int k = 0; k < ex; k++){
 		        	if(simResult[k] != null){
 		        		
 		        		
@@ -114,10 +114,17 @@ public class ChoiceGenerator {
         //Generate AnsSet with true and false answers
         for( int j = 0; j < n; j++){
         	ansSet[j] =  options[j];
-        	ansSet[j + n] =  wrongAns[j];
+        	ansSet[j + ex] =  wrongAns[j];
         	
         }
         
+        ArrayList<String> ansSetOutput = new ArrayList<String>();
+        for( int i = 0; i < n + ex; i++){
+        	ansSetOutput.add(ansSet[i]);
+        }
+        
+        java.util.Collections.shuffle(ansSetOutput);
+		
         //add A - Z index to each answer
         /*int A = 65;
         for( int j = 0; j < n*2; j++){
@@ -126,6 +133,11 @@ public class ChoiceGenerator {
         }*/
         
         //return the answer set
+        
+        for( int i = 0; i < n + ex; i++){
+        	ansSet[i] = ansSetOutput.get(i);
+        }
+        
         return ansSet; 
 		
 
@@ -145,9 +157,9 @@ public class ChoiceGenerator {
 		options[3] = "Taiwan";
 		options[4] = "Steve Jobs";
 		
-		show = ChoiceGenerator(options, 5);
+		show = ChoiceGenerator(options, 5, 3);
 		
-		for( int i = 0; i < 10; i++){
+		for( int i = 0; i < 8; i++){
         	System.out.println(show[i]); 
         }
 		
