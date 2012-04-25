@@ -20,7 +20,7 @@ public class mainclass {
 			System.out.println(i.toString());
 	*/	
 		
-		try{
+		/*try{
 			questionbank.Paraphraser p = new Paraphraser("While emissions from new cars are far less harmful than they used to be, city streets and motorways are becoming more crowded than ever, often with older trucks, buses and taxis which emit excessive levels of smoke and fumes.");
 			p.setChanges(false, true, true, false, 0.4);
 			System.err.println("paraphrase");
@@ -37,5 +37,17 @@ public class mainclass {
 		
 	}
 	*/
+		
+		LibraryInitializer li = new LibraryInitializer();
+		
+		
+		Essay e = new Essay("lib/test1.txt");
+		Essay[] es = new Essay[1];
+		es[0] = e;
+		SevenTypes st = new SevenTypes(e, 4);
+		
+		st.questionGen();
+		
+	}
 
 }

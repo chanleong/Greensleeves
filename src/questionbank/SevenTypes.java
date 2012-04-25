@@ -52,7 +52,7 @@ public class SevenTypes extends Question {
 		this.qnNum = qnNum;
 		this.questionType = Question.QuestionType.SevenTypes;
 		
-		instruc[0] = "this is an instruction";
+		//instruc[0] = "this is an instruction";
 		this.setInstruction(instruc);
 	}
 
@@ -100,6 +100,10 @@ public class SevenTypes extends Question {
 			
 		}
 		potentialFacts = new ArrayList<String>(new HashSet<String>(potentialFacts));
+		/*System.err.println("potential facts");
+		for (String p : potentialFacts){
+			System.out.println(p);
+		}*/
 		
 		Random r = new Random();
 		ArrayList<String> selectedFacts = new ArrayList<String>();
@@ -109,10 +113,22 @@ public class SevenTypes extends Question {
 			for (int i = 0; i < qnNum; i++){
 				Integer selected = r.nextInt(potentialFacts.size());
 				selectedFacts.add(potentialFacts.get(selected));
+				potentialFacts.remove(potentialFacts.get(selected));
+				//potentialFacts.
+				
 				potentialFacts.remove(selected);
+				System.out.println("---------------potential facts");
+				for (String p : potentialFacts){
+					System.out.println(p);
+				}
 			}
 		}else{
 			selectedFacts = potentialFacts;
+		}
+		
+		System.out.println("----------------selected facts");
+		for (String s : selectedFacts){
+			System.out.println(s);
 		}
 		
 		//choices = new ArrayList<String>();
@@ -128,11 +144,16 @@ public class SevenTypes extends Question {
 		}
 		
 		for (String f : selectedFacts){
+			System.out.println("====== fact: "+f);
 			ArrayList<Sentence> tempSelectedQs = FactEvaluator.getSentenceAbout(f, essay);
 
 			String question = (tempSelectedQs.get(r.nextInt(tempSelectedQs.size())).toString());
 			question = paraphrase(question, f, targetType);
 			System.out.println(question);
+			for (String c : choices){
+				System.out.println(">>choice>>" + c);
+			}
+			
 			Integer choiceNum = choices.indexOf(f);
 			Pair<String, Integer> pp = new Pair<String, Integer>(question, choiceNum);
 			selectedQs.add(pp);
@@ -140,8 +161,10 @@ public class SevenTypes extends Question {
 			
 		}
 		
-		questionAnsPair.setLeft(selectedQs);
-		questionAnsPair.setRight(choices);
+		questionAnsPair = new Pair<ArrayList<Pair<String, Integer>>, ArrayList<String>>(selectedQs, choices);
+		
+		//questionAnsPair.setLeft(selectedQs);
+		//questionAnsPair.setRight(choices);
 		
 
 
@@ -151,7 +174,7 @@ public class SevenTypes extends Question {
 		instruc[3] = "List of " + targetType.toString().toLowerCase();
 		
 		this.setInstruction(instruc);
-		
+		java.util.Collections.shuffle(choices);
 		System.out.println(instruc[3]);
 		for (String c : choices){
 			System.out.println(c);
@@ -179,10 +202,10 @@ public class SevenTypes extends Question {
 		String replacement;
 		switch (targetType){
 		case DATE:
-			replacement = "when";
+			replacement = "the date";
 			break;
 		case LOCATION:
-			replacement = "where";
+			replacement = "the location";
 			break;
 		case MONEY:
 			replacement = "how much";
@@ -204,6 +227,7 @@ public class SevenTypes extends Question {
 			break;
 		}
 		result.replaceAll(fact, replacement);
+	
 		try {
 			Paraphraser p = new Paraphraser(result);
 			p.setChanges(false, true, true, false, 0.7);
