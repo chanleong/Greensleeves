@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import questionbank.Question.QuestionType;
+import GUI.*;
+
 import essay.*;
 
 public class ExamGenerator implements Runnable{
@@ -27,21 +30,84 @@ public class ExamGenerator implements Runnable{
 	 * Generate question for the whole exam paper
 	 */
 	public synchronized void genQuestion(){
+//		if(GUI.qts != null)
 		for(int i = 0; i < this.essays.length; i++){
 			if(i == 0){
-				genInfo(this.essays[i], i);
-				//genParaHeading(essays[i], i);
-				this.questionQuota[i] -= essays[i].getNumOfParas();
-				//For the remaining quota, generate MC
-				genMCQ(essays[i], this.questionQuota[i]);
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
+				
+				chooseQuestionType(i, qt);
+//				genInfo(this.essays[i], i);
+//				genParaHeading(essays[i], i);
+//				this.questionQuota[i] -= essays[i].getNumOfParas();
+//				//For the remaining quota, generate MC
+//				genMCQ(essays[i], this.questionQuota[i]);				
+				
 			}else if(i == 1){
-				genParaHeading(essays[i], i);
-				this.questionQuota[i] -= essays[i].getNumOfParas();
-
+//				genParaHeading(essays[i], i);
+//				this.questionQuota[i] -= essays[i].getNumOfParas();
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
+				chooseQuestionType(i, qt);
 
 			}else if(i == 2){
-
+				//genMCQ(essays[i], this.questionQuota[i]-10);
+				ArrayList<QuestionType> qt = GUI.qts.get(i);
+				chooseQuestionType(i, qt);
 			}
+		}
+	}
+	
+	private void chooseQuestionType(int i, ArrayList<QuestionType> qt){
+		if(qt.get(0) == QuestionType.InfoIdentification){
+			genInfo(this.essays[i], i);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}else if(qt.get(0) == QuestionType.ParagraphHeading){
+			genParaHeading(essays[i], i);
+			this.questionQuota[i] -= essays[i].getNumOfParas();
+		}else if(qt.get(0) == QuestionType.MCQ){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genMCQ(essays[i], min);
+			this.questionQuota[i] -= min;
+		}else if(qt.get(0) == QuestionType.TFNG){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genTFNG(essays[i], min);
+			this.questionQuota[i] -= min;
+		}else if(qt.get(0) == QuestionType.Matching){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i]/2;
+			int min = Math.min(numOfParas, quota);
+			
+			genMatching(essays[i], min);
+			
+		}
+		
+		if(qt.get(1) == QuestionType.ParagraphHeading){
+			genParaHeading(essays[i], i);
+		}else if(qt.get(1) == QuestionType.MCQ){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genMCQ(essays[i], min);
+		}else if(qt.get(1) == QuestionType.TFNG){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genTFNG(essays[i], min);
+		}else if(qt.get(1) == QuestionType.SevenTypes){
+			
+		}else if(qt.get(1) == QuestionType.Matching){
+			int numOfParas = essays[i].getNumOfParas();
+			int quota = this.questionQuota[i];
+			int min = Math.min(numOfParas, quota);
+			
+			genMatching(essays[i], min);
 		}
 	}
 	
@@ -64,11 +130,16 @@ public class ExamGenerator implements Runnable{
 		for(int i = 0; i < numOfParahraphs; i++) paragraphs[i] = i;
 		shuffle(paragraphs);
 		
+		MCQs mcqs = new MCQs();
+		
 		for(int i = 0; i < numOfMCQs; i++){
-			MCQ mcq = new MCQ(e.getParagraph(i));
+			MCQ mcq = new MCQ(e.getParagraph(paragraphs[i]), paragraphs[i]);
 			mcq.questionGen();
-			questionList.add(mcq);
+			mcqs.addQuestionAnsPair(mcq.getQuestionAnsPair());
+			mcqs.addInstruction(mcq.getInstructions()[0]);
 		}
+		
+		questionList.add(mcqs);
 	}
 	
 	private synchronized void genTFNG(Essay e, int numOfTFNGs){
@@ -79,12 +150,16 @@ public class ExamGenerator implements Runnable{
 		for(int i = 0; i < numOfParahraphs; i++) paragraphs[i] = i;
 		shuffle(paragraphs);
 		
+		TFNGs tfngs = new TFNGs();
+		
 		for(int i = 0; i < numOfTFNGs; i++){
 			Sentence s = r.getRankedSentences(e.getParagraph(i)).get(0); //Get the highest ranked sentence
 			TFNG tfng = new TFNG(s);
 			tfng.questionGen();
-			questionList.add(tfng);
+			tfngs.addQuestionAnsPair(tfng.getQuestionAnsPair());
 		}
+		
+		questionList.add(tfngs);
 		
 	}
 	
@@ -92,6 +167,12 @@ public class ExamGenerator implements Runnable{
 		SevenTypes seven = new SevenTypes(e, numOf7Types);
 		seven.questionGen();
 		questionList.add(seven);
+	}
+	
+	private synchronized void genMatching(Essay e, int numOfQs){
+		Matching matching = new Matching(e, numOfQs);
+		matching.questionGen();
+		questionList.add(matching);
 	}
 	
 	/**
@@ -113,7 +194,7 @@ public class ExamGenerator implements Runnable{
 			arr[i] = tmp;
 		}
 	}
-
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

@@ -28,7 +28,7 @@ public class Tagparsing {
 	}
 	
 	private String parse(){
-		LexicalizedParser lp = LexicalizedParser.loadModel("edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz");
+		LexicalizedParser lp = LibraryInitializer.LP;
 		
 	    TokenizerFactory<CoreLabel> tokenizerFactory = 
 	      PTBTokenizer.factory(new CoreLabelTokenFactory(), "");

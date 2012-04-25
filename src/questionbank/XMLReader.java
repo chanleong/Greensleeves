@@ -22,7 +22,7 @@ public class XMLReader {
 	
 	public static String getRelation(String reln, Node node){
 		String xpath = "./" + reln + "/text";
-		String value = "";
+		String value = " ";
 		
 		Element e = (Element)node.selectSingleNode(xpath);
 		
@@ -38,12 +38,14 @@ public class XMLReader {
 	
 	public static String getVerbFeature(String feature, Node node){
 		String xpath = "./action/verb/" + feature;
+		String value = " ";
 		Element e = (Element)node.selectSingleNode(xpath);
 		
 		if(e != null){
-			return e.getText();
+			value = e.getText();
+			return value;
 		}else{
-			return "";
+			return value;
 		}
 	}
 	

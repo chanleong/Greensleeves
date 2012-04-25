@@ -1,5 +1,6 @@
 package questionbank;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +17,7 @@ import edu.stanford.nlp.trees.TypedDependency;
 import edu.stanford.nlp.trees.semgraph.SemanticGraph;
 import essay.Essay;
 import essay.Paragraph;
+import essay.Ranker;
 import essay.Sentence;
 
 public class ParagraphHeading extends Question{
@@ -77,10 +79,29 @@ public class ParagraphHeading extends Question{
 
 			}
 			int chosenIdx = chooseSent(SentenceProcessor.sents);	
+			if(SentenceProcessor.sents.size() != 0){
+				this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
+				System.out.println(SentenceProcessor.sents.get(chosenIdx));
+			}else{
+				//Paraphrase a random sentence in Paragraph i
+				
+				Ranker rank = new Ranker();
+				String sent = rank.getRankedSentences(e.getParagraph(i)).get(0).toString();
+				try {
+					Paraphraser _p = new Paraphraser(sent);
+					_p.setChanges(false, true, true, false, 0.7);
+					sent = _p.paraphrase();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				this.questionAnsPair.add(new Pair<Integer, String>(i, sent));
+			}
+				
 
-			this.questionAnsPair.add(new Pair<Integer, String>(i, SentenceProcessor.sents.get(chosenIdx)));
-
-			System.out.println(SentenceProcessor.sents.get(chosenIdx));
+			
 			System.out.println("Paragraph: " + i);
 		}
 		
